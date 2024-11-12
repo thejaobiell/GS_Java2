@@ -15,11 +15,10 @@ import com.google.gson.JsonObject;
 
 public class CEPService {
 
-    private static final String URL = "https://api.invertexto.com/v1/cep";
-    private static final String TOKEN = "16105|zznB1xp5QYh83Je0ARWpblnZo1PMkB2C";
+    private static final String URL = "https://viacep.com.br/ws";
 
     public ResultadoConsultaCEP consultarCEP(String cep) throws ClientProtocolException, IOException {
-        String url = URL + "/" + cep + "?token=" + TOKEN;
+        String url = URL + "/" + cep + "/json/";
         HttpGet request = new HttpGet(url);
         CloseableHttpClient httpClient = HttpClientBuilder.create().disableRedirectHandling().build();
         CloseableHttpResponse resposta = httpClient.execute(request);
@@ -29,12 +28,16 @@ public class CEPService {
         if (entidade != null) {
             String resultado = EntityUtils.toString(entidade);
             JsonObject jsonObject = new Gson().fromJson(resultado, JsonObject.class);
-            String rua = jsonObject.has("street") ? jsonObject.get("street").getAsString() : "";
-            String bairro = jsonObject.has("neighborhood") ? jsonObject.get("neighborhood").getAsString() : "";
-            String cidade = jsonObject.has("city") ? jsonObject.get("city").getAsString() : "";
-            String estado = jsonObject.has("state") ? jsonObject.get("state").getAsString() : "";
+            if (jsonObject.has("erro") && jsonObject.get("erro").getAsBoolean()) {
+                throw new IOException("Erro ao consultar o CEP (" + cep + "): CEP não encontrado.");
+            }
+
+            String rua = jsonObject.has("logradouro") ? jsonObject.get("logradouro").getAsString() : "";
+            String bairro = jsonObject.has("bairro") ? jsonObject.get("bairro").getAsString() : "";
+            String cidade = jsonObject.has("localidade") ? jsonObject.get("localidade").getAsString() : "";
+            String estado = jsonObject.has("uf") ? jsonObject.get("uf").getAsString() : "";
             String cepFormatado = jsonObject.has("cep") ? jsonObject.get("cep").getAsString() : cep;
-            
+
             resultadoConsulta = new ResultadoConsultaCEP(rua, bairro, cidade, estado, cepFormatado);
         }
 
