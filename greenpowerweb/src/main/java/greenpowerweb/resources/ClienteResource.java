@@ -49,7 +49,7 @@ public class ClienteResource {
     public Response atualizarCliente(ClienteVO cliente, @PathParam("email") String email) {
         try {
             clienteBO.atualizarCliente(cliente);
-            return Response.ok(cliente.toString())
+            return Response.ok("Cliente atualizado com sucesso!" + cliente.toString())
                     .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -64,7 +64,7 @@ public class ClienteResource {
     public Response deletarCliente(@PathParam("email") String email) {
         try {
             clienteBO.deletarCliente(email);
-            return Response.ok().build();
+            return Response.ok("Cliente "+ email + " deletado com sucesso!").build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao deletar cliente: " + e.getMessage())

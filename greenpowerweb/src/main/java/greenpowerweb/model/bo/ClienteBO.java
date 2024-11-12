@@ -33,12 +33,14 @@ public class ClienteBO {
     public ArrayList<ClienteVO> listarClientes() throws ClassNotFoundException, SQLException {
         return (ArrayList<ClienteVO>) clienteDAO.ClienteDAO_SELECTALL();
     }
-    
+
     private void validarClienteDados(ClienteVO cliente) throws IOException {
         CEPService.ResultadoConsultaCEP cepConsulta = cepService.consultarCEP(cliente.getCep_Cliente());
         if (cepConsulta.getCepFormatado() == null || cepConsulta.getCepFormatado().isEmpty()) {
-            throw new IllegalArgumentException("CEP inválido.");
+            throw new IllegalArgumentException("CEP inválido( " + cepConsulta.getCepFormatado() +" ), coloque um CEP válido.");
+        }
+        if (cliente.getComplemento_Cliente() == null || cliente.getComplemento_Cliente().isEmpty()) {
+            cliente.setComplemento_Cliente("N/A");
         }
     }
-
 }

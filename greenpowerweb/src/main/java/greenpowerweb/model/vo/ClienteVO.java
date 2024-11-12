@@ -134,8 +134,8 @@ public class ClienteVO {
                "Email: " + email_Cliente + " | " +
                "Senha: " + (senha_Cliente != null ? "*".repeat(senha_Cliente.length()) : "Não cadastrada") + " | " +
                "Endereço: " + rua_Cliente + ", Nº " + numero_Cliente + 
-               ", Complemento: " + (complemento_Cliente != null && !complemento_Cliente.isEmpty() ? complemento_Cliente : "N/A") +
-               ", Bairro: " + bairro_Cliente + ", Cidade: " + cidade_Cliente + ", Estado: " + estado_Cliente + " CEP: " + cep_Cliente;
+               ", Complemento: " + complemento_Cliente + ", Bairro: " + bairro_Cliente + ", Cidade: " + cidade_Cliente + 
+               ", Estado: " + estado_Cliente + " CEP: " + cep_Cliente;
     }
 
 }
