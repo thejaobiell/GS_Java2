@@ -8,6 +8,7 @@ import greenpowerweb.model.vo.ProdutoVO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 @Path("/produto")
 public class ProdutoResource {
@@ -22,24 +23,40 @@ public class ProdutoResource {
         }
     }
 
-    // Inserir (POST)
+ // Inserir um único produto (POST)
     @POST
+    @Path("/unico")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response cadastrarProduto(ProdutoVO produto, @Context UriInfo uriInfo) {
         try {
             produtoBO.cadastrarProduto(produto);
-            UriBuilder builder = uriInfo.getAbsolutePathBuilder();
-            builder.path(String.valueOf(produto.getId_produto()));
-            return Response.created(builder.build())
-                    .entity(produto.toString())
-                    .build();
+            return Response.ok("Produto cadastrado com sucesso!").build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao cadastrar produto: " + e.getMessage())
                     .build();
         }
     }
+
+ // Inserir vários produtos (POST)
+    @POST
+    @Path("/varios")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response cadastrarProdutos(List<ProdutoVO> produtos, @Context UriInfo uriInfo) {
+        try {
+            for (ProdutoVO produto : produtos) {
+                produtoBO.cadastrarProduto(produto);
+            }
+            return Response.ok("Produtos cadastrados com sucesso!").build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao cadastrar produtos: " + e.getMessage())
+                    .build();
+        }
+    }
+
 
     // Atualizar (PUT)
     @PUT

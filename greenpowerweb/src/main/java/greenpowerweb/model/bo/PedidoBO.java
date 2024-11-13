@@ -23,7 +23,7 @@ public class PedidoBO {
 	}
 	
 	public void deletarPedido(int id_pedido) throws ClassNotFoundException, SQLException, IOException {
-		pedidoDAO.PedidoDAO_DELETE(0);
+		pedidoDAO.PedidoDAO_DELETE(id_pedido);
 	}
 	
 	public ArrayList<PedidoVO> listarPedidos()  throws ClassNotFoundException, SQLException, IOException {

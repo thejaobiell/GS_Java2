@@ -19,12 +19,13 @@ public class PedidoDAO {
 
     // CREATE
     public void PedidoDAO_INSERT(PedidoVO pedido) throws SQLException {
-        String sql = "INSERT INTO PEDIDO (email_cliente, data_pedido, status_pedido) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO PEDIDO (id_pedido, email_cliente, data_pedido, status_pedido) VALUES (?, ?, ?, ?)";
         
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
-            stmt.setString(1, pedido.getEmail_cliente());
-            stmt.setDate(2, new java.sql.Date(pedido.getData_pedido().getTime()));
-            stmt.setString(3, pedido.getStatus_pedido());
+            stmt.setInt(1, pedido.getId_pedido());  // Incluindo o id_pedido no INSERT
+            stmt.setString(2, pedido.getEmail_cliente());
+            stmt.setDate(3, new java.sql.Date(pedido.getData_pedido().getTime()));
+            stmt.setString(4, pedido.getStatus_pedido());
             stmt.executeUpdate();
         }
     }
@@ -85,11 +86,11 @@ public class PedidoDAO {
     }
 
     // DELETE
-    public void PedidoDAO_DELETE(int idPedido) throws SQLException {
+    public void PedidoDAO_DELETE(int id_pedido) throws SQLException {
         String sql = "DELETE FROM PEDIDO WHERE id_pedido = ?";
         
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
-            stmt.setInt(1, idPedido);
+            stmt.setInt(1, id_pedido);
             stmt.executeUpdate();
         }
     }
