@@ -7,7 +7,7 @@ import greenpowerweb.model.bo.PagamentoBO;
 import greenpowerweb.model.vo.PagamentoVO;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 @Path("/pagamento")
 public class PagamentoResource {
@@ -41,20 +41,56 @@ public class PagamentoResource {
         }
     }
 
-    // Atualizar (PUT)
+    // Atualizar (PUT) - Atualizar pagamento com Pix
     @PUT
-    @Path("/{id_pagamento}")
+    @Path("/pix/{id_pagamento}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response atualizarPagamento(PagamentoVO pagamento, @PathParam("id_pagamento") int idPagamento) {
+    public Response atualizarPagamentoPix(PagamentoVO pagamento, @PathParam("id_pagamento") int idPagamento) {
         try {
             pagamento.setId_pagamento(idPagamento);
-            pagamentoBO.atualizarPedido(pagamento);
-            return Response.ok("Status do Pagamento atualizado! " + pagamento.toString())
+            pagamentoBO.atualizarPagamentoPix(pagamento);
+            return Response.ok("Pagamento atualizado com sucesso utilizando Pix! " + pagamento.toString())
                     .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro ao atualizar pagamento: " + e.getMessage())
+                    .entity("Erro ao atualizar pagamento com Pix: " + e.getMessage())
+                    .build();
+        }
+    }
+
+    // Atualizar (PUT) - Atualizar pagamento com Cartão
+    @PUT
+    @Path("/cartao/{id_pagamento}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response atualizarPagamentoCartao(PagamentoVO pagamento, @PathParam("id_pagamento") int idPagamento) {
+        try {
+            pagamento.setId_pagamento(idPagamento);
+            pagamentoBO.atualizarPagamentoCartao(pagamento);
+            return Response.ok("Pagamento atualizado com sucesso utilizando Cartão! " + pagamento.toString())
+                    .build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao atualizar pagamento com Cartão: " + e.getMessage())
+                    .build();
+        }
+    }
+
+    // Atualizar (PUT) - Atualizar pagamento com Boleto
+    @PUT
+    @Path("/boleto/{id_pagamento}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response atualizarPagamentoBoleto(PagamentoVO pagamento, @PathParam("id_pagamento") int idPagamento) {
+        try {
+            pagamento.setId_pagamento(idPagamento);
+            pagamentoBO.atualizarPagamentoBoleto(pagamento);
+            return Response.ok("Pagamento atualizado com sucesso utilizando Boleto! " + pagamento.toString())
+                    .build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao atualizar pagamento com Boleto: " + e.getMessage())
                     .build();
         }
     }
@@ -64,7 +100,7 @@ public class PagamentoResource {
     @Path("/{id_pagamento}")
     public Response deletarPagamento(@PathParam("id_pagamento") int idPagamento) {
         try {
-            pagamentoBO.deletarPedido(idPagamento);
+            pagamentoBO.deletarPagamento(idPagamento);
             return Response.ok("Pagamento " + idPagamento + " deletado com sucesso!").build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -78,7 +114,7 @@ public class PagamentoResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response listarPagamentos() {
         try {
-            ArrayList<PagamentoVO> pagamentos = pagamentoBO.listarPedidos();
+            List<PagamentoVO> pagamentos = pagamentoBO.listarPagamentos();
             return Response.ok(pagamentos).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)

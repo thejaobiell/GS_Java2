@@ -1,9 +1,6 @@
 package greenpowerweb.model.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,15 +16,21 @@ public class PagamentoDAO {
 
     // CREATE
     public void PagamentoDAO_INSERT(PagamentoVO pagamento) throws SQLException {
-        String sql = "INSERT INTO PAGAMENTO (id_pagamento, email_cliente, forma_pagamento, valor_pagamento, data_pagamento, status_pagamento) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO PAGAMENTO (id_pagamento, id_pedido, id_transacao, forma_pagamento, " +
+                     "status_pagamento, data_pagamento, valor_pagamento, id_cartao, chave_pix, numero_boleto) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setInt(1, pagamento.getId_pagamento());
-            stmt.setString(2, pagamento.getEmail_cliente());
-            stmt.setString(3, pagamento.getForma_pagamento());
-            stmt.setDouble(4, pagamento.getValor_pagamento());
-            stmt.setDate(5, pagamento.getData_pagamento());
-            stmt.setString(6, pagamento.getStatus_pagamento());
+            stmt.setInt(2, pagamento.getId_pedido());
+            stmt.setString(3, pagamento.getId_transacao());
+            stmt.setString(4, pagamento.getForma_pagamento());
+            stmt.setString(5, pagamento.getStatus_pagamento());
+            stmt.setDate(6, new java.sql.Date(pagamento.getData_pagamento().getTime()));
+            stmt.setDouble(7, pagamento.getValor_pagamento());
+            stmt.setString(8, pagamento.getId_cartao());
+            stmt.setString(9, pagamento.getChave_pix());
+            stmt.setString(10, pagamento.getNumero_boleto());
             stmt.executeUpdate();
         }
     }
@@ -43,11 +46,15 @@ public class PagamentoDAO {
             while (rs.next()) {
                 PagamentoVO pagamento = new PagamentoVO(
                     rs.getInt("id_pagamento"),
-                    rs.getString("email_cliente"),
+                    rs.getInt("id_pedido"),
+                    rs.getString("id_transacao"),
                     rs.getString("forma_pagamento"),
                     rs.getDouble("valor_pagamento"),
                     rs.getDate("data_pagamento"),
-                    rs.getString("status_pagamento")
+                    rs.getString("status_pagamento"),
+                    rs.getString("id_cartao"),
+                    rs.getString("chave_pix"),
+                    rs.getString("numero_boleto")
                 );
                 pagamentos.add(pagamento);
             }
@@ -57,14 +64,19 @@ public class PagamentoDAO {
 
     // UPDATE
     public void PagamentoDAO_ATUALIZAR(PagamentoVO pagamento) throws SQLException {
-        String sql = "UPDATE PAGAMENTO SET forma_pagamento = ?, valor_pagamento = ?, data_pagamento = ?, status_pagamento = ? WHERE id_pagamento = ?";
+        String sql = "UPDATE PAGAMENTO SET id_pedido = ?, id_transacao = ?, forma_pagamento = ?, status_pagamento = ?, data_pagamento = ?, valor_pagamento = ?, id_cartao = ?, chave_pix = ?, numero_boleto = ? WHERE id_pagamento = ?";
         
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
-            stmt.setString(1, pagamento.getForma_pagamento());
-            stmt.setDouble(2, pagamento.getValor_pagamento());
-            stmt.setDate(3, pagamento.getData_pagamento());
+            stmt.setInt(1, pagamento.getId_pedido());
+            stmt.setString(2, pagamento.getId_transacao());
+            stmt.setString(3, pagamento.getForma_pagamento());
             stmt.setString(4, pagamento.getStatus_pagamento());
-            stmt.setInt(5, pagamento.getId_pagamento());
+            stmt.setDate(5, new java.sql.Date(pagamento.getData_pagamento().getTime()));
+            stmt.setDouble(6, pagamento.getValor_pagamento());
+            stmt.setString(7, pagamento.getId_cartao());
+            stmt.setString(8, pagamento.getChave_pix());
+            stmt.setString(9, pagamento.getNumero_boleto());
+            stmt.setInt(10, pagamento.getId_pagamento());
             stmt.executeUpdate();
         }
     }

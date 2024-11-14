@@ -31,8 +31,9 @@ public class PedidoResource {
             pedidoBO.cadastrarPedido(pedido);
             UriBuilder builder = uriInfo.getAbsolutePathBuilder();
             builder.path(String.valueOf(pedido.getId_pedido()));
+            String mensagem = "Pedido cadastrado com sucesso!\n" + pedido.toString();
             return Response.created(builder.build())
-                    .entity(pedido)
+                    .entity(mensagem)
                     .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -41,16 +42,17 @@ public class PedidoResource {
         }
     }
 
+
     // Atualizar (PUT)
     @PUT
     @Path("/{id_pedido}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response atualizarPedido(PedidoVO pedido, @PathParam("id_pedido") int idPedido) {
+    public Response atualizarPedido(PedidoVO pedido, @PathParam("id_pedido") int id_pedido) {
         try {
-            pedido.setId_pedido(idPedido);
+            pedido.setId_pedido(id_pedido);
             pedidoBO.atualizarPedido(pedido);
-            return Response.ok("Status do Pedido atualizado! " + pedido.toString())
+            return Response.ok("Pedido atualizado com sucesso! " + pedido.toStringEdit())
                     .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -62,10 +64,10 @@ public class PedidoResource {
     // Deletar (DELETE)
     @DELETE
     @Path("/{id_pedido}")
-    public Response deletarPedido(@PathParam("id_pedido") int idPedido) {
+    public Response deletarPedido(@PathParam("id_pedido") int id_pedido) {
         try {
-            pedidoBO.deletarPedido(idPedido);
-            return Response.ok("Pedido " + idPedido + " deletado com sucesso!").build();
+            pedidoBO.deletarPedido(id_pedido);
+            return Response.ok("Pedido " + id_pedido + " deletado com sucesso!").build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao deletar pedido: " + e.getMessage())

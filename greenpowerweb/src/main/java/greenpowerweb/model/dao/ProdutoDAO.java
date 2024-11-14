@@ -19,20 +19,19 @@ public class ProdutoDAO {
 
     // CREATE
     public void ProdutoDAO_INSERT(ProdutoVO produto) throws SQLException {
-        String sql = "INSERT INTO PRODUTO (ID_PRODUTO, NOME_PRODUTO, DESCRICAO_PRODUTO, PRECO_PRODUTO, POTENCIA_PRODUTO, TIPO_PRODUTO) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO PRODUTO (ID_PRODUTO, NOME_PRODUTO, DESCRICAO_PRODUTO, PRECO_PRODUTO, TIPO_PRODUTO) VALUES (?, ?, ?, ?, ?)";
         
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setInt(1, produto.getId_produto());
             stmt.setString(2, produto.getNome_produto());
             stmt.setString(3, produto.getDescricao_produto());
             stmt.setDouble(4, produto.getPreco_produto());
-            stmt.setDouble(5, produto.getPotencia_produto());
-            stmt.setString(6, produto.getTipo_produto());
+            stmt.setString(5, produto.getTipo_produto());
             stmt.executeUpdate();
         }
     }
 
-    // READ (Listar todos os produtos)
+    // READ (Listar todos os clientes)
     public List<ProdutoVO> ProdutoDAO_SELECTALL() throws SQLException {
         List<ProdutoVO> produtos = new ArrayList<>();
         String sql = "SELECT * FROM PRODUTO";
@@ -46,7 +45,6 @@ public class ProdutoDAO {
                     rs.getString("NOME_PRODUTO"),
                     rs.getString("DESCRICAO_PRODUTO"),
                     rs.getDouble("PRECO_PRODUTO"),
-                    rs.getDouble("POTENCIA_PRODUTO"),
                     rs.getString("TIPO_PRODUTO")
                 );
                 produtos.add(produto);
@@ -57,15 +55,14 @@ public class ProdutoDAO {
 
     // UPDATE
     public void ProdutoDAO_ATUALIZAR(ProdutoVO produto) throws SQLException {
-        String sql = "UPDATE PRODUTO SET NOME_PRODUTO = ?, DESCRICAO_PRODUTO = ?, PRECO_PRODUTO = ?, POTENCIA_PRODUTO = ?, TIPO_PRODUTO = ? WHERE ID_PRODUTO = ?";
+        String sql = "UPDATE PRODUTO SET NOME_PRODUTO = ?, DESCRICAO_PRODUTO = ?, PRECO_PRODUTO = ?, TIPO_PRODUTO = ? WHERE ID_PRODUTO = ?";
         
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setString(1, produto.getNome_produto());
             stmt.setString(2, produto.getDescricao_produto());
             stmt.setDouble(3, produto.getPreco_produto());
-            stmt.setDouble(4, produto.getPotencia_produto());
-            stmt.setString(5, produto.getTipo_produto());
-            stmt.setInt(6, produto.getId_produto());
+            stmt.setString(4, produto.getTipo_produto());
+            stmt.setInt(5, produto.getId_produto());
             stmt.executeUpdate();
         }
     }

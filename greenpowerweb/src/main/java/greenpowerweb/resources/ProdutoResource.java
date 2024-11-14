@@ -7,7 +7,6 @@ import greenpowerweb.model.bo.ProdutoBO;
 import greenpowerweb.model.vo.ProdutoVO;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Path("/produto")
@@ -23,7 +22,7 @@ public class ProdutoResource {
         }
     }
 
- // Inserir um único produto (POST)
+    // Inserir um único produto (POST)
     @POST
     @Path("/unico")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -39,7 +38,7 @@ public class ProdutoResource {
         }
     }
 
- // Inserir vários produtos (POST)
+    // Inserir vários produtos (POST)
     @POST
     @Path("/varios")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -56,7 +55,6 @@ public class ProdutoResource {
                     .build();
         }
     }
-
 
     // Atualizar (PUT)
     @PUT
@@ -95,7 +93,7 @@ public class ProdutoResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response listarProdutos() {
         try {
-            ArrayList<ProdutoVO> produtos = produtoBO.listarProdutos();
+            List<ProdutoVO> produtos = produtoBO.listarProdutos();
             return Response.ok(produtos).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)

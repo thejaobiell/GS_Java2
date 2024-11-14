@@ -6,17 +6,15 @@ public class ProdutoVO {
     private String nome_produto;
 	private String descricao_produto;
 	private double preco_produto;
-	private double potencia_produto;
 	private String tipo_produto;
 	
 	public ProdutoVO(){}
 
-	public ProdutoVO(int id_produto, String nome_produto, String descricao_produto, double preco_produto, double potencia_produto, String tipo_produto) {
+	public ProdutoVO(int id_produto, String nome_produto, String descricao_produto, double preco_produto, String tipo_produto) {
 		this.id_produto = id_produto;
 		this.nome_produto = nome_produto;
 		this.descricao_produto = descricao_produto;
 		this.preco_produto = preco_produto;
-		this.potencia_produto = potencia_produto;
 		this.tipo_produto = tipo_produto;
 	}
 	
@@ -53,14 +51,6 @@ public class ProdutoVO {
 		this.preco_produto = preco_produto;
 	}
 
-	public double getPotencia_produto() {
-		return potencia_produto;
-	}
-
-	public void setPotencia_produto(double potencia_produto) {
-		this.potencia_produto = potencia_produto;
-	}
-
 	public String getTipo_produto() {
 		return tipo_produto;
 	}
@@ -76,7 +66,6 @@ public class ProdutoVO {
 	           "Nome do Produto: " + nome_produto + "\n" +
 	           "Descrição do Produto: " + descricao_produto + "\n" +
 	           "Preço do Produto: R$ " + String.format("%.2f", preco_produto) + "\n" +
-	           "Potência do Produto: " + potencia_produto + " W\n" +
 	           "Tipo do Produto: " + tipo_produto;
 	}
 }
