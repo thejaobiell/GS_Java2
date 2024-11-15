@@ -22,7 +22,6 @@ public class PagamentoResource {
         }
     }
 
-    // Inserir (POST)
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -32,7 +31,7 @@ public class PagamentoResource {
             UriBuilder builder = uriInfo.getAbsolutePathBuilder();
             builder.path(String.valueOf(pagamento.getId_pagamento()));
             return Response.created(builder.build())
-                    .entity("Pagamento cadastrado com sucesso! " + pagamento.toString())
+                    .entity("Pagamento registrado com sucesso! " + pagamento.toString())
                     .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -41,61 +40,27 @@ public class PagamentoResource {
         }
     }
 
-    // Atualizar (PUT) - Atualizar pagamento com Pix
     @PUT
-    @Path("/pix/{id_pagamento}")
+    @Path("/{id_pagamento}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response atualizarPagamentoPix(PagamentoVO pagamento, @PathParam("id_pagamento") int idPagamento) {
+    public Response atualizarPagamento(PagamentoVO pagamento, @PathParam("id_pagamento") int idPagamento) {
         try {
             pagamento.setId_pagamento(idPagamento);
-            pagamentoBO.atualizarPagamentoPix(pagamento);
-            return Response.ok("Pagamento atualizado com sucesso utilizando Pix! " + pagamento.toString())
+            pagamentoBO.atualizarPagamento(pagamento);
+            return Response.ok("Pagamento atualizado com sucesso! ID: " + idPagamento)
+                    .build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao atualizar pagamento: " + e.getMessage())
                     .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro ao atualizar pagamento com Pix: " + e.getMessage())
+                    .entity("Erro inesperado ao atualizar pagamento: " + e.getMessage())
                     .build();
         }
     }
 
-    // Atualizar (PUT) - Atualizar pagamento com Cartão
-    @PUT
-    @Path("/cartao/{id_pagamento}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response atualizarPagamentoCartao(PagamentoVO pagamento, @PathParam("id_pagamento") int idPagamento) {
-        try {
-            pagamento.setId_pagamento(idPagamento);
-            pagamentoBO.atualizarPagamentoCartao(pagamento);
-            return Response.ok("Pagamento atualizado com sucesso utilizando Cartão! " + pagamento.toString())
-                    .build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro ao atualizar pagamento com Cartão: " + e.getMessage())
-                    .build();
-        }
-    }
-
-    // Atualizar (PUT) - Atualizar pagamento com Boleto
-    @PUT
-    @Path("/boleto/{id_pagamento}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response atualizarPagamentoBoleto(PagamentoVO pagamento, @PathParam("id_pagamento") int idPagamento) {
-        try {
-            pagamento.setId_pagamento(idPagamento);
-            pagamentoBO.atualizarPagamentoBoleto(pagamento);
-            return Response.ok("Pagamento atualizado com sucesso utilizando Boleto! " + pagamento.toString())
-                    .build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro ao atualizar pagamento com Boleto: " + e.getMessage())
-                    .build();
-        }
-    }
-
-    // Deletar (DELETE)
     @DELETE
     @Path("/{id_pagamento}")
     public Response deletarPagamento(@PathParam("id_pagamento") int idPagamento) {
@@ -109,7 +74,6 @@ public class PagamentoResource {
         }
     }
 
-    // Consultar (GET)
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response listarPagamentos() {

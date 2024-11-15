@@ -10,13 +10,14 @@ public class PagamentoVO {
     private String status_pagamento;
     private Date data_pagamento;
     private double valor_pagamento;
-    private String id_cartao;
+    private Integer id_cartao;
     private String chave_pix;
     private String numero_boleto;
+    private Integer qtd_parcelas;
 
     public PagamentoVO() {}
 
-    public PagamentoVO(int id_pagamento, int id_pedido, String id_transacao, String forma_pagamento, double valor_pagamento, Date data_pagamento, String status_pagamento, String id_cartao, String chave_pix, String numero_boleto) {
+    public PagamentoVO(int id_pagamento, int id_pedido, String id_transacao, String forma_pagamento, double valor_pagamento, Date data_pagamento, String status_pagamento, Integer id_cartao, String chave_pix, String numero_boleto, Integer qtd_parcelas) {
         this.id_pagamento = id_pagamento;
         this.id_pedido = id_pedido;
         this.id_transacao = id_transacao;
@@ -27,6 +28,7 @@ public class PagamentoVO {
         this.id_cartao = id_cartao;
         this.chave_pix = chave_pix;
         this.numero_boleto = numero_boleto;
+        this.qtd_parcelas = qtd_parcelas;
     }
 
     public int getId_pagamento() {
@@ -85,11 +87,11 @@ public class PagamentoVO {
         this.valor_pagamento = valor_pagamento;
     }
 
-    public String getId_cartao() {
+    public Integer getId_cartao() {
         return id_cartao;
     }
 
-    public void setId_cartao(String id_cartao) {
+    public void setId_cartao(Integer id_cartao) {
         this.id_cartao = id_cartao;
     }
 
@@ -109,6 +111,14 @@ public class PagamentoVO {
         this.numero_boleto = numero_boleto;
     }
 
+    public Integer getQtd_parcelas() {
+        return qtd_parcelas;
+    }
+
+    public void setQtd_parcelas(Integer qtd_parcelas) {
+        this.qtd_parcelas = qtd_parcelas;
+    }
+
     @Override
     public String toString() {
         return "Detalhes do Pagamento:\n" +
@@ -119,9 +129,10 @@ public class PagamentoVO {
                 "Valor do Pagamento: R$ " + String.format("%.2f", valor_pagamento) + "\n" +
                 "Data do Pagamento: " + data_pagamento + "\n" +
                 "Status do Pagamento: " + status_pagamento + "\n" +
-                "ID do Cartão: " + (id_cartao != null ? chave_pix : "null") + "\n" +
-                "Chave PIX: " + (chave_pix != null ? chave_pix : "null") + "\n" +
-                "Número do Boleto: " + (numero_boleto != null ? numero_boleto : "null");
+                "ID do Cartão: " + (id_cartao != null ? id_cartao : "N/A") + "\n" +
+                "Chave PIX: " + (chave_pix != null ? chave_pix : "N/A") + "\n" +
+                "Número do Boleto: " + (numero_boleto != null ? numero_boleto : "N/A") + "\n" +
+                "Quantidade de Parcelas: " + (qtd_parcelas != null ? qtd_parcelas : "N/A") + "\n";  // Incluindo qtd_parcelas
     }
     
     public String toStringCartao() {
@@ -133,7 +144,8 @@ public class PagamentoVO {
                 "Valor do Pagamento: R$ " + String.format("%.2f", valor_pagamento) + "\n" +
                 "Data do Pagamento: " + data_pagamento + "\n" +
                 "Status do Pagamento: " + status_pagamento + "\n" +
-                "ID do Cartão: " + id_cartao + "\n";
+                "ID do Cartão: " + (id_cartao != null ? id_cartao : "N/A") + "\n" +
+                "Quantidade de Parcelas: " + (qtd_parcelas != null ? qtd_parcelas : "N/A") + "\n";  // Incluindo qtd_parcelas
     }
     
     public String toStringPix() {
@@ -145,7 +157,8 @@ public class PagamentoVO {
                 "Valor do Pagamento: R$ " + String.format("%.2f", valor_pagamento) + "\n" +
                 "Data do Pagamento: " + data_pagamento + "\n" +
                 "Status do Pagamento: " + status_pagamento + "\n" +
-                "Chave PIX: " + (chave_pix != null ? chave_pix : "N/A") + "\n";
+                "Chave PIX: " + (chave_pix != null ? chave_pix : "N/A") + "\n" +
+                "Quantidade de Parcelas: " + (qtd_parcelas != null ? qtd_parcelas : "N/A") + "\n";  // Incluindo qtd_parcelas
     }
     
     public String toStringBoleto() {
@@ -157,6 +170,7 @@ public class PagamentoVO {
                 "Valor do Pagamento: R$ " + String.format("%.2f", valor_pagamento) + "\n" +
                 "Data do Pagamento: " + data_pagamento + "\n" +
                 "Status do Pagamento: " + status_pagamento + "\n" +
-                "Número do Boleto: " + (numero_boleto != null ? numero_boleto : "N/A");
+                "Número do Boleto: " + (numero_boleto != null ? numero_boleto : "N/A") + "\n" +
+                "Quantidade de Parcelas: " + (qtd_parcelas != null ? qtd_parcelas : "N/A") + "\n";  // Incluindo qtd_parcelas
     }
 }

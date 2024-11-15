@@ -17,9 +17,23 @@ public class ItemPedidoDAO {
         this.conexao = new ConnDAO().conexao();
     }
 
+    public double buscarPrecoProduto(int idProduto) throws SQLException {
+        String sql = "SELECT preco_produto FROM PRODUTO WHERE id_produto = ?";
+        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
+            stmt.setInt(1, idProduto);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getDouble("preco_produto");
+                } else {
+                    throw new IllegalArgumentException("Produto com id " + idProduto + " não encontrado.");
+                }
+            }
+        }
+    }
+    
     // CREATE
     public void ItemPedidoDAO_INSERT(ItemPedidoVO itemPedido) throws SQLException {
-        String sql = "INSERT INTO ITEM_PEDIDO (id_item, id_pedido, id_produto, quantidade, preco_unitario) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO ITEM_PEDIDO (id_item, id_pedido, id_produto, quantidade, preco_unitario, preco_final) VALUES (?, ?, ?, ?, ?, ?)";
         
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setInt(1, itemPedido.getId_item());
@@ -27,6 +41,7 @@ public class ItemPedidoDAO {
             stmt.setInt(3, itemPedido.getId_produto());
             stmt.setInt(4, itemPedido.getQuantidade());
             stmt.setDouble(5, itemPedido.getPreco_unitario());
+            stmt.setDouble(6, itemPedido.getPreco_final());
             stmt.executeUpdate();
         }
     }
@@ -55,17 +70,16 @@ public class ItemPedidoDAO {
 
     // UPDATE
     public void ItemPedidoDAO_ATUALIZAR(ItemPedidoVO itemPedido) throws SQLException {
-        String sql = "UPDATE ITEM_PEDIDO SET id_pedido = ?, id_produto = ?, quantidade = ?, preco_unitario = ? WHERE id_item = ?";
-        
+        String sql = "UPDATE ITEM_PEDIDO SET id_pedido = ?, id_produto = ?, quantidade = ? WHERE id_item = ?";
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setInt(1, itemPedido.getId_pedido());
             stmt.setInt(2, itemPedido.getId_produto());
             stmt.setInt(3, itemPedido.getQuantidade());
-            stmt.setDouble(4, itemPedido.getPreco_unitario());
-            stmt.setInt(5, itemPedido.getId_item());
+            stmt.setInt(4, itemPedido.getId_item());
             stmt.executeUpdate();
         }
     }
+
 
     // DELETE
     public void ItemPedidoDAO_DELETE(int idItem) throws SQLException {

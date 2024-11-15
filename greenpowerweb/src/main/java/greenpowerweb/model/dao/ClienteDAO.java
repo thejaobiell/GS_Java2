@@ -66,6 +66,38 @@ public class ClienteDAO {
         }
         return clientes;
     }
+    
+    // Verificar login (GET)
+    public ClienteVO ClienteDAO_LOGIN(String email, String senha) throws SQLException {
+        String sql = "SELECT * FROM CLIENTE WHERE email_cliente = ? AND senha_cliente = ?";
+        
+        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            stmt.setString(2, senha);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return new ClienteVO(
+                        rs.getString("email_cliente"),
+                        rs.getString("senha_cliente"),
+                        rs.getString("nome_cliente"),
+                        rs.getString("sobrenome_cliente"),
+                        rs.getString("cpf_cliente"),
+                        rs.getString("rua_cliente"),
+                        rs.getInt("numero_cliente"),
+                        rs.getString("complemento_cliente"),
+                        rs.getString("bairro_cliente"),
+                        rs.getString("cidade_cliente"),
+                        rs.getString("estado_cliente"),
+                        rs.getString("cep_cliente")
+                    );
+                } else {
+                    return null;
+                }
+            }
+        }
+    }
+
 
     // UPDATE
     public void ClienteDAO_ATUALIZAR(ClienteVO cliente) throws SQLException {

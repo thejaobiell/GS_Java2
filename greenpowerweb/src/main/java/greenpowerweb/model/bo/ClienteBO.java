@@ -2,7 +2,7 @@ package greenpowerweb.model.bo;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 import greenpowerweb.model.dao.ClienteDAO;
 import greenpowerweb.model.vo.ClienteVO;
 import greenpowerweb.service.CEPService;
@@ -30,8 +30,12 @@ public class ClienteBO {
         clienteDAO.ClienteDAO_DELETE(cpfCliente);
     }
 
-    public ArrayList<ClienteVO> listarClientes() throws ClassNotFoundException, SQLException {
-        return (ArrayList<ClienteVO>) clienteDAO.ClienteDAO_SELECTALL();
+    public List<ClienteVO> listarClientes() throws ClassNotFoundException, SQLException {
+        return (List<ClienteVO>) clienteDAO.ClienteDAO_SELECTALL();
+    }
+    
+    public ClienteVO verificarLogin(String email, String senha) throws SQLException {
+        return clienteDAO.ClienteDAO_LOGIN(email, senha);
     }
 
     private void validarClienteDados(ClienteVO cliente) throws IOException {

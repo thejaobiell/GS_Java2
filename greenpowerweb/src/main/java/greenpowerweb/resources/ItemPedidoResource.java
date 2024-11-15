@@ -2,7 +2,6 @@ package greenpowerweb.resources;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-
 import greenpowerweb.model.bo.ItemPedidoBO;
 import greenpowerweb.model.vo.ItemPedidoVO;
 
@@ -22,7 +21,7 @@ public class ItemPedidoResource {
         }
     }
 
-    // Inserir um único item de pedido (POST)
+    // Inserir (POST)
     @POST
     @Path("/unico")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -30,7 +29,7 @@ public class ItemPedidoResource {
     public Response cadastrarItemPedido(ItemPedidoVO itemPedido) {
         try {
             itemPedidoBO.cadastrarItemPedido(itemPedido);
-            return Response.ok("Item de pedido cadastrado com sucesso!").build();
+            return Response.ok("Item de pedido cadastrado com sucesso! " + itemPedido.toString()).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao cadastrar item de pedido: " + e.getMessage())
@@ -38,7 +37,7 @@ public class ItemPedidoResource {
         }
     }
 
-    // Inserir múltiplos itens de pedido (POST)
+    // Inserir varios (POST)
     @POST
     @Path("/varios")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -48,7 +47,7 @@ public class ItemPedidoResource {
             for (ItemPedidoVO itemPedido : itensPedido) {
                 itemPedidoBO.cadastrarItemPedido(itemPedido);
             }
-            return Response.ok("Itens de pedido cadastrados com sucesso!").build();
+            return Response.ok("Itens de pedido cadastrados com sucesso! " + itensPedido.toString()).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao cadastrar itens de pedido: " + e.getMessage())
@@ -56,7 +55,7 @@ public class ItemPedidoResource {
         }
     }
 
-    // Atualizar um item de pedido (PUT)
+    // Atualizar (PUT)
     @PUT
     @Path("/{id_item}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -73,7 +72,7 @@ public class ItemPedidoResource {
         }
     }
 
-    // Deletar um item de pedido (DELETE)
+    // Deletar (DELETE)
     @DELETE
     @Path("/{id_item}")
     public Response deletarItemPedido(@PathParam("id_item") int idItem) {
@@ -87,7 +86,7 @@ public class ItemPedidoResource {
         }
     }
 
-    // Consultar todos os itens de pedido (GET)
+    // Consultar (GET)
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response listarItensPedido() {

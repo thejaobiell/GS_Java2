@@ -15,25 +15,32 @@ public class PagamentoBO {
     }
     
     public void cadastrarPagamento(PagamentoVO pagamento) throws ClassNotFoundException, SQLException, IOException {
+        if (pagamento.getQtd_parcelas() <= 0 || pagamento.getQtd_parcelas() > 10) {
+            throw new IllegalArgumentException("A quantidade de parcelas não pode ser menor que 0 ou maior que 10");
+        }
+    	
+        switch (pagamento.getForma_pagamento()) {
+            case "Cartão de Crédito":
+                pagamento.setChave_pix(null);
+                pagamento.setNumero_boleto(null);
+                break;
+            case "Pix":
+                pagamento.setId_cartao(null);
+                pagamento.setNumero_boleto(null);
+                break;
+            case "Boleto":
+                pagamento.setId_cartao(null);
+                pagamento.setChave_pix(null);
+                break;
+            default:
+                throw new IllegalArgumentException("Forma de pagamento inválida");
+        }
         pagamentoDAO.PagamentoDAO_INSERT(pagamento);
     }
     
-    public void atualizarPagamentoPix(PagamentoVO pagamento) throws ClassNotFoundException, SQLException, IOException {
-        pagamento.setId_cartao(null);
-        pagamento.setNumero_boleto(null);
+    public void atualizarPagamento(PagamentoVO pagamento) throws ClassNotFoundException, SQLException, IOException {
         pagamentoDAO.PagamentoDAO_ATUALIZAR(pagamento);
-    }
-    
-    public void atualizarPagamentoCartao(PagamentoVO pagamento) throws ClassNotFoundException, SQLException, IOException {
-        pagamento.setChave_pix(null);
-        pagamento.setNumero_boleto(null);
-        pagamentoDAO.PagamentoDAO_ATUALIZAR(pagamento);
-    }
-
-    public void atualizarPagamentoBoleto(PagamentoVO pagamento) throws ClassNotFoundException, SQLException, IOException {
-        pagamento.setId_cartao(null);
-        pagamento.setChave_pix(null);
-        pagamentoDAO.PagamentoDAO_ATUALIZAR(pagamento);
+        pagamentoDAO.atualizarStatusPedido(pagamento.getId_pedido(), pagamento.getStatus_pagamento());
     }
     
     public void deletarPagamento(int idPagamento) throws ClassNotFoundException, SQLException, IOException {

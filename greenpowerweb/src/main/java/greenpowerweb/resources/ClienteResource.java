@@ -7,7 +7,7 @@ import greenpowerweb.model.bo.ClienteBO;
 import greenpowerweb.model.vo.ClienteVO;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 @Path("/cliente")
 public class ClienteResource {
@@ -22,8 +22,9 @@ public class ClienteResource {
         }
     }
 
-    // Inserir (POST)
+    // Cadastrar (POST)
     @POST
+    @Path("/cadastrar")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response cadastrarCliente(ClienteVO cliente, @Context UriInfo uriInfo) throws ClassNotFoundException, SQLException {
@@ -43,7 +44,7 @@ public class ClienteResource {
 
     // Atualizar (PUT)
     @PUT
-    @Path("/{email}")
+    @Path("/atualizar/{email}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response atualizarCliente(ClienteVO cliente, @PathParam("email") String email) {
@@ -60,7 +61,7 @@ public class ClienteResource {
 
     // Deletar (DELETE)
     @DELETE
-    @Path("/{email}")
+    @Path("/deletar/{email}")
     public Response deletarCliente(@PathParam("email") String email) {
         try {
             clienteBO.deletarCliente(email);
@@ -74,10 +75,11 @@ public class ClienteResource {
 
     // Consultar (GET)
     @GET
+    @Path("/listar")
     @Produces(MediaType.APPLICATION_JSON)
     public Response listarClientes() {
         try {
-            ArrayList<ClienteVO> clientes = clienteBO.listarClientes();
+            List<ClienteVO> clientes = clienteBO.listarClientes();
             return Response.ok(clientes).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -85,4 +87,28 @@ public class ClienteResource {
                     .build();
         }
     }
+    
+    // Verificar login (GET)
+    @GET
+    @Path("/login")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response verificarLogin(@QueryParam("email") String email, @QueryParam("senha") String senha) {
+        try {
+            ClienteVO cliente = clienteBO.verificarLogin(email, senha);
+            
+            if (cliente != null) {
+                return Response.ok(cliente).build();
+            } else {
+                return Response.status(Response.Status.UNAUTHORIZED)
+                        .entity("Email ou senha incorretos. Tente Novamente")
+                        .build();
+            }
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao verificar login: " + e.getMessage())
+                    .build();
+        }
+    }
+
+
 }

@@ -17,6 +17,11 @@ public class ItemPedidoBO {
         if (itemPedido == null) {
             throw new IllegalArgumentException("ItemPedido não pode ser nulo.");
         }
+
+        double precoProduto = itemPedidoDAO.buscarPrecoProduto(itemPedido.getId_produto());
+        itemPedido.setPreco_unitario(precoProduto);
+        itemPedido.setPreco_final(itemPedido.getQuantidade() * precoProduto);
+
         itemPedidoDAO.ItemPedidoDAO_INSERT(itemPedido);
     }
 
@@ -37,4 +42,6 @@ public class ItemPedidoBO {
         }
         itemPedidoDAO.ItemPedidoDAO_DELETE(idItem);
     }
+    
+    
 }
