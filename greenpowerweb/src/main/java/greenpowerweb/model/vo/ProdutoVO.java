@@ -8,7 +8,7 @@ public class ProdutoVO {
 	private double preco_produto;
 	private String tipo_produto;
 	
-	public ProdutoVO(){}
+	public ProdutoVO() {}
 
 	public ProdutoVO(int id_produto, String nome_produto, String descricao_produto, double preco_produto, String tipo_produto) {
 		this.id_produto = id_produto;

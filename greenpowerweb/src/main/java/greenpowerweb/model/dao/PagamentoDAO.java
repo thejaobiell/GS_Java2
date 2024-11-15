@@ -16,10 +16,22 @@ public class PagamentoDAO {
 
     // CREATE
     public void PagamentoDAO_INSERT(PagamentoVO pagamento) throws SQLException {
-        String sql = "INSERT INTO PAGAMENTO (id_pagamento, id_pedido, id_transacao, forma_pagamento, " +
-                     "status_pagamento, data_pagamento, valor_pagamento, id_cartao, chave_pix, numero_boleto, qtd_parcelas) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        
+        String sqlValorPedido = "SELECT valor_total FROM PEDIDO WHERE id_pedido = ?";
+        double valorTotalPedido = 0.0;
+
+        try (PreparedStatement stmtValorPedido = conexao.prepareStatement(sqlValorPedido)) {
+            stmtValorPedido.setInt(1, pagamento.getId_pedido());
+            try (ResultSet rs = stmtValorPedido.executeQuery()) {
+                if (rs.next()) {
+                    valorTotalPedido = rs.getDouble("valor_total");
+                } else {
+                    throw new SQLException("Pedido não encontrado para o id_pedido: " + pagamento.getId_pedido());
+                }
+            }
+        }
+        pagamento.setValor_pagamento(valorTotalPedido);
+        String sql = "INSERT INTO PAGAMENTO (id_pagamento, id_pedido, id_transacao, forma_pagamento, status_pagamento, data_pagamento, valor_pagamento, id_cartao, chave_pix, numero_boleto, qtd_parcelas) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setInt(1, pagamento.getId_pagamento());
             stmt.setInt(2, pagamento.getId_pedido());
@@ -35,7 +47,6 @@ public class PagamentoDAO {
             stmt.executeUpdate();
         }
     }
-
 
     // READ (Listar todos os pagamentos)
     public List<PagamentoVO> PagamentoDAO_SELECTALL() throws SQLException {
@@ -100,9 +111,6 @@ public class PagamentoDAO {
             stmtPedido.executeUpdate();
         }
     }
-
-
-
 
     // DELETE
     public void PagamentoDAO_DELETE(int idPagamento) throws SQLException {

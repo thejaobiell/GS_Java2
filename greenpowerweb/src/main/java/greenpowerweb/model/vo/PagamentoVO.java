@@ -15,7 +15,7 @@ public class PagamentoVO {
     private String numero_boleto;
     private Integer qtd_parcelas;
 
-    public PagamentoVO() {}
+    public PagamentoVO () {}
 
     public PagamentoVO(int id_pagamento, int id_pedido, String id_transacao, String forma_pagamento, double valor_pagamento, Date data_pagamento, String status_pagamento, Integer id_cartao, String chave_pix, String numero_boleto, Integer qtd_parcelas) {
         this.id_pagamento = id_pagamento;

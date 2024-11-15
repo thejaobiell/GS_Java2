@@ -1,6 +1,6 @@
 package greenpowerweb.model.vo;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class PedidoVO {
     private int id_pedido;

@@ -7,7 +7,7 @@ import greenpowerweb.model.bo.PedidoBO;
 import greenpowerweb.model.vo.PedidoVO;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 @Path("/pedido")
 public class PedidoResource {
@@ -22,8 +22,9 @@ public class PedidoResource {
         }
     }
 
-    // Inserir (POST)
+    // Cadastrar um pedido (POST)
     @POST
+    @Path("/registrar")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response cadastrarPedido(PedidoVO pedido, @Context UriInfo uriInfo) {
@@ -42,10 +43,9 @@ public class PedidoResource {
         }
     }
 
-
-    // Atualizar (PUT)
+    // Atualizar pedido (PUT)
     @PUT
-    @Path("/{id_pedido}")
+    @Path("/atualizar/{id_pedido}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response atualizarPedido(PedidoVO pedido, @PathParam("id_pedido") int id_pedido) {
@@ -61,9 +61,9 @@ public class PedidoResource {
         }
     }
 
-    // Deletar (DELETE)
+    // Deletar pedido (DELETE)
     @DELETE
-    @Path("/{id_pedido}")
+    @Path("/deletar/{id_pedido}")
     public Response deletarPedido(@PathParam("id_pedido") int id_pedido) {
         try {
             pedidoBO.deletarPedido(id_pedido);
@@ -75,12 +75,13 @@ public class PedidoResource {
         }
     }
 
-    // Consultar (GET)
+    // Listar pedidos (GET)
     @GET
+    @Path("/listar")
     @Produces(MediaType.APPLICATION_JSON)
     public Response listarPedidos() {
         try {
-            ArrayList<PedidoVO> pedidos = pedidoBO.listarPedidos();
+            List<PedidoVO> pedidos = pedidoBO.listarPedidos();
             return Response.ok(pedidos).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)

@@ -14,11 +14,27 @@ public class PedidoDAO {
         this.conexao = new ConnDAO().conexao();
     }
 
+    public double calcularValorTotal(int idPedido) throws SQLException {
+        String sql = "SELECT SUM(preco_final) AS valor_total FROM ITEM_PEDIDO WHERE id_pedido = ?";
+        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
+            stmt.setInt(1, idPedido);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getDouble("valor_total");
+                }
+            }
+        }
+        return 0.0;
+    }
+
     // CREATE
     public void PedidoDAO_INSERT(PedidoVO pedido) throws SQLException {
+        double valorTotal = calcularValorTotal(pedido.getId_pedido());
+        pedido.setValor_total(valorTotal);
+
         String sql = "INSERT INTO PEDIDO (id_pedido, email_cliente, data_pedido, status_pedido, status_pagamento, valor_total) " +
                      "VALUES (?, ?, ?, ?, ?, ?)";
-        
+
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setInt(1, pedido.getId_pedido());
             stmt.setString(2, pedido.getEmail_cliente());
@@ -30,14 +46,14 @@ public class PedidoDAO {
         }
     }
 
-    // READ (Listar todos os clientes)
+    // READ (Listar todos os pedidos)
     public List<PedidoVO> PedidoDAO_SELECTALL() throws SQLException {
         List<PedidoVO> pedidos = new ArrayList<>();
         String sql = "SELECT * FROM PEDIDO";
-        
+
         try (PreparedStatement stmt = conexao.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
-            
+
             while (rs.next()) {
                 PedidoVO pedido = new PedidoVO(
                     rs.getInt("id_pedido"),
@@ -55,12 +71,16 @@ public class PedidoDAO {
 
     // UPDATE
     public void PedidoDAO_ATUALIZAR(PedidoVO pedido) throws SQLException {
-        String sql = "UPDATE PEDIDO SET status_pedido = ?, status_pagamento = ? WHERE id_pedido = ?";
-        
+        double valorTotal = calcularValorTotal(pedido.getId_pedido());
+        pedido.setValor_total(valorTotal);
+
+        String sql = "UPDATE PEDIDO SET status_pedido = ?, status_pagamento = ?, valor_total = ? WHERE id_pedido = ?";
+
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setString(1, pedido.getStatus_pedido());
             stmt.setString(2, pedido.getStatus_pagamento());
-            stmt.setInt(3, pedido.getId_pedido());
+            stmt.setDouble(3, pedido.getValor_total());
+            stmt.setInt(4, pedido.getId_pedido());
             stmt.executeUpdate();
         }
     }
@@ -68,7 +88,7 @@ public class PedidoDAO {
     // DELETE
     public void PedidoDAO_DELETE(int idPedido) throws SQLException {
         String sql = "DELETE FROM PEDIDO WHERE id_pedido = ?";
-        
+
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setInt(1, idPedido);
             stmt.executeUpdate();

@@ -18,7 +18,6 @@ public class PagamentoBO {
         if (pagamento.getQtd_parcelas() <= 0 || pagamento.getQtd_parcelas() > 10) {
             throw new IllegalArgumentException("A quantidade de parcelas não pode ser menor que 0 ou maior que 10");
         }
-    	
         switch (pagamento.getForma_pagamento()) {
             case "Cartão de Crédito":
                 pagamento.setChave_pix(null);

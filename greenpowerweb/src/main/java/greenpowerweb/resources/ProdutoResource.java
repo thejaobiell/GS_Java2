@@ -22,9 +22,9 @@ public class ProdutoResource {
         }
     }
 
-    // Inserir um único produto (POST)
+    // Cadastrar um único produto (POST)
     @POST
-    @Path("/unico")
+    @Path("/registrar-unico")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response cadastrarProduto(ProdutoVO produto, @Context UriInfo uriInfo) {
@@ -38,9 +38,9 @@ public class ProdutoResource {
         }
     }
 
-    // Inserir vários produtos (POST)
+    // Cadastrar vários produtos (POST)
     @POST
-    @Path("/varios")
+    @Path("/registrar-varios")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response cadastrarProdutos(List<ProdutoVO> produtos, @Context UriInfo uriInfo) {
@@ -56,9 +56,9 @@ public class ProdutoResource {
         }
     }
 
-    // Atualizar (PUT)
+    // Atualizar produto (PUT)
     @PUT
-    @Path("/{id_produto}")
+    @Path("/atualizar/{id_produto}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response atualizarProduto(ProdutoVO produto, @PathParam("id_produto") int id_produto) {
@@ -74,9 +74,9 @@ public class ProdutoResource {
         }
     }
 
-    // Deletar (DELETE)
+    // Deletar produto (DELETE)
     @DELETE
-    @Path("/{id_produto}")
+    @Path("/deletar/{id_produto}")
     public Response deletarProduto(@PathParam("id_produto") int id_produto) {
         try {
             produtoBO.deletarProduto(id_produto);
@@ -88,8 +88,9 @@ public class ProdutoResource {
         }
     }
 
-    // Consultar (GET)
+    // Listar produtos (GET)
     @GET
+    @Path("/listar")
     @Produces(MediaType.APPLICATION_JSON)
     public Response listarProdutos() {
         try {

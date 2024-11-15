@@ -22,8 +22,9 @@ public class PainelSolarResource {
         }
     }
 
-    // Inserir (POST)
+    // Cadastrar painel solar (POST)
     @POST
+    @Path("/registrar")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response cadastrarPainelSolar(PainelSolarVO painelSolar, @Context UriInfo uriInfo) throws SQLException {
@@ -32,7 +33,7 @@ public class PainelSolarResource {
             UriBuilder builder = uriInfo.getAbsolutePathBuilder();
             builder.path(String.valueOf(painelSolar.getId_painelsolar()));
             return Response.created(builder.build())
-                    .entity(painelSolar.toString())
+                    .entity("Painel solar cadastrado com sucesso! " + painelSolar.toString())
                     .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -41,9 +42,9 @@ public class PainelSolarResource {
         }
     }
 
-    // Atualizar (PUT)
+    // Atualizar painel solar (PUT)
     @PUT
-    @Path("/{id}")
+    @Path("/atualizar/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response atualizarPainelSolar(PainelSolarVO painelSolar, @PathParam("id") int id) {
@@ -59,9 +60,9 @@ public class PainelSolarResource {
         }
     }
 
-    // Deletar (DELETE)
+    // Deletar painel solar (DELETE)
     @DELETE
-    @Path("/{id}")
+    @Path("/deletar/{id}")
     public Response deletarPainelSolar(@PathParam("id") int id) {
         try {
             painelSolarBO.deletarPainelSolar(id);
@@ -73,8 +74,9 @@ public class PainelSolarResource {
         }
     }
 
-    // Consultar (GET)
+    // Listar painéis solares (GET)
     @GET
+    @Path("/listar")
     @Produces(MediaType.APPLICATION_JSON)
     public Response listarPaineisSolares() {
         try {
@@ -89,7 +91,7 @@ public class PainelSolarResource {
 
     // Consultar painel solar por ID (GET)
     @GET
-    @Path("/{id}")
+    @Path("/consultar/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response consultarPainelSolar(@PathParam("id") int id) {
         try {

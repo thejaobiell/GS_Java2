@@ -22,7 +22,9 @@ public class CartaoCreditoResource {
         }
     }
 
+    // Cadastrar (POST)
     @POST
+    @Path("/registrar")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response cadastrarCartao(CartaoCreditoVO cartao, @Context UriInfo uriInfo) {
@@ -40,8 +42,9 @@ public class CartaoCreditoResource {
         }
     }
 
+    // Atualizar (PUT)
     @PUT
-    @Path("/{numero_cartao}")
+    @Path("/atualizar/{numero_cartao}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response atualizarCartao(CartaoCreditoVO cartao, @PathParam("numero_cartao") String numeroCartao) {
@@ -57,8 +60,9 @@ public class CartaoCreditoResource {
         }
     }
 
+    // Deletar (DELETE)
     @DELETE
-    @Path("/{numero_cartao}")
+    @Path("/deletar/{numero_cartao}")
     public Response deletarCartao(@PathParam("numero_cartao") String numeroCartao) {
         try {
             cartaoCreditoBO.excluirCartao(numeroCartao);
@@ -70,7 +74,9 @@ public class CartaoCreditoResource {
         }
     }
 
+    // Consultar (GET)
     @GET
+    @Path("/listar")
     @Produces(MediaType.APPLICATION_JSON)
     public Response listarCartoes() {
         try {

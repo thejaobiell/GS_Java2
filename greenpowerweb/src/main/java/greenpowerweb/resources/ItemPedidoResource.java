@@ -21,9 +21,9 @@ public class ItemPedidoResource {
         }
     }
 
-    // Inserir (POST)
+    // Cadastrar um único item de pedido (POST)
     @POST
-    @Path("/unico")
+    @Path("/registrar-unico")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response cadastrarItemPedido(ItemPedidoVO itemPedido) {
@@ -37,9 +37,9 @@ public class ItemPedidoResource {
         }
     }
 
-    // Inserir varios (POST)
+    // Cadastrar vários itens de pedido (POST)
     @POST
-    @Path("/varios")
+    @Path("/registrar-varios")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response cadastrarItensPedido(List<ItemPedidoVO> itensPedido) {
@@ -55,9 +55,9 @@ public class ItemPedidoResource {
         }
     }
 
-    // Atualizar (PUT)
+    // Atualizar item de pedido (PUT)
     @PUT
-    @Path("/{id_item}")
+    @Path("/atualizar/{id_item}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response atualizarItemPedido(ItemPedidoVO itemPedido, @PathParam("id_item") int idItem) {
@@ -72,9 +72,9 @@ public class ItemPedidoResource {
         }
     }
 
-    // Deletar (DELETE)
+    // Deletar item de pedido (DELETE)
     @DELETE
-    @Path("/{id_item}")
+    @Path("/deletar/{id_item}")
     public Response deletarItemPedido(@PathParam("id_item") int idItem) {
         try {
             itemPedidoBO.deletarItemPedido(idItem);
@@ -86,8 +86,9 @@ public class ItemPedidoResource {
         }
     }
 
-    // Consultar (GET)
+    // Listar itens de pedido (GET)
     @GET
+    @Path("/listar")
     @Produces(MediaType.APPLICATION_JSON)
     public Response listarItensPedido() {
         try {

@@ -22,7 +22,9 @@ public class PagamentoResource {
         }
     }
 
+    // Cadastrar pagamento (POST)
     @POST
+    @Path("/registrar")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response cadastrarPagamento(PagamentoVO pagamento, @Context UriInfo uriInfo) {
@@ -40,8 +42,9 @@ public class PagamentoResource {
         }
     }
 
+    // Atualizar pagamento (PUT)
     @PUT
-    @Path("/{id_pagamento}")
+    @Path("/atualizar/{id_pagamento}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response atualizarPagamento(PagamentoVO pagamento, @PathParam("id_pagamento") int idPagamento) {
@@ -61,8 +64,9 @@ public class PagamentoResource {
         }
     }
 
+    // Deletar pagamento (DELETE)
     @DELETE
-    @Path("/{id_pagamento}")
+    @Path("/deletar/{id_pagamento}")
     public Response deletarPagamento(@PathParam("id_pagamento") int idPagamento) {
         try {
             pagamentoBO.deletarPagamento(idPagamento);
@@ -74,7 +78,9 @@ public class PagamentoResource {
         }
     }
 
+    // Listar pagamentos (GET)
     @GET
+    @Path("/listar")
     @Produces(MediaType.APPLICATION_JSON)
     public Response listarPagamentos() {
         try {

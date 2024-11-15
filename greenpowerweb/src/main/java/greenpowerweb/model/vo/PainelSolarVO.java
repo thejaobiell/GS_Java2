@@ -9,7 +9,7 @@ public class PainelSolarVO {
 	private int energia_consumida_kwh;
 	private Date data_registro;
 	
-	public PainelSolarVO (){}
+	public PainelSolarVO() {}
 
 	public PainelSolarVO(int id_painelsolar, int id_pedido, int energia_gerada_kwh, int energia_consumida_kwh, Date data_registro) {
 		this.id_painelsolar = id_painelsolar;
@@ -61,8 +61,13 @@ public class PainelSolarVO {
 
 	@Override
 	public String toString() {
-		return "PainelSolarVO [id_painelsolar=" + id_painelsolar + ", id_pedido=" + id_pedido + ", energia_gerada_kwh="
-				+ energia_gerada_kwh + ", energia_consumida_kwh=" + energia_consumida_kwh + ", data_registro="
-				+ data_registro + "]";
+	    java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy");
+	    String dataFormatada = dateFormat.format(data_registro);
+	    return "Painel Solar [ID: " + id_painelsolar + 
+	           ", Pedido ID: " + id_pedido + 
+	           ", Energia Gerada: " + String.format("%.2f", energia_gerada_kwh) + " kWh" +
+	           ", Energia Consumida: " + String.format("%.2f", energia_consumida_kwh) + " kWh" + 
+	           ", Data de Registro: " + dataFormatada + "]";
 	}
+
 }
