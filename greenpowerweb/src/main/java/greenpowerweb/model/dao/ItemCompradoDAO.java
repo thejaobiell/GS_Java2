@@ -17,7 +17,7 @@ public class ItemCompradoDAO {
         this.conexao = new ConnDAO().conexao();
     }
 
-    public void itemPedidoDaoInsert(ItemCompradoVO itemPedido) throws SQLException {
+    public void itemCompradoDaoInsert(ItemCompradoVO itemPedido) throws SQLException {
         String sqlInsert = "INSERT INTO ITEM_COMPRADO (id_item, id_pedido, id_produto, quantidade, preco_unitario, preco_final) VALUES (?, ?, ?, ?, ?, ?)";
         String sqlUpdatePedido = "UPDATE PEDIDO SET valor_total = (SELECT SUM(preco_final) FROM ITEM_COMPRADO WHERE id_pedido = ?) WHERE id_pedido = ?";
         try (PreparedStatement stmtInsert = conexao.prepareStatement(sqlInsert);
@@ -35,7 +35,7 @@ public class ItemCompradoDAO {
         }
     }
 
-    public List<ItemCompradoVO> itemPedidoDaoSelectAll() throws SQLException {
+    public List<ItemCompradoVO> itemCompradoDaoSelectAll() throws SQLException {
         List<ItemCompradoVO> itensPedido = new ArrayList<>();
         String sql = "SELECT * FROM ITEM_COMPRADO";
         
@@ -57,7 +57,7 @@ public class ItemCompradoDAO {
         return itensPedido;
     }
 
-    public void itemPedidoDaoAtualizar(ItemCompradoVO itemPedido) throws SQLException {
+    public void itemCompradoDaoAtualizar(ItemCompradoVO itemPedido) throws SQLException {
         String sqlUpdateItem = "UPDATE ITEM_COMPRADO SET id_pedido = ?, id_produto = ?, quantidade = ?, preco_unitario = ?, preco_final = ? WHERE id_item = ?";
         String sqlUpdatePedido = "UPDATE PEDIDO SET valor_total = (SELECT SUM(preco_final) FROM ITEM_COMPRADO WHERE id_pedido = ?) WHERE id_pedido = ?";
 
@@ -76,7 +76,7 @@ public class ItemCompradoDAO {
         }
     }
 
-    public void itemPedidoDaoDelete(int idItem) throws SQLException {
+    public void itemCompradoDaoDelete(int idItem) throws SQLException {
         String sql = "DELETE FROM ITEM_COMPRADO WHERE id_item = ?";
         
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
