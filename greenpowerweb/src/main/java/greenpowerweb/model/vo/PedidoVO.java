@@ -85,6 +85,7 @@ public class PedidoVO {
         return "Detalhes do Pedido Atualizado: " +
                "ID Pedido = " + id_pedido +
                ", Status Pedido = '" + status_pedido + '\'' +
-               ", Status Pagamento = '" + status_pagamento;
+               ", Status Pagamento = '" + status_pagamento + '\'' +
+               ", Valor Total = " + valor_total;
     }
 }

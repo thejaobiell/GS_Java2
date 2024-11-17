@@ -2,7 +2,7 @@ package greenpowerweb.model.bo;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 import greenpowerweb.model.dao.PedidoDAO;
 import greenpowerweb.model.vo.PedidoVO;
@@ -15,34 +15,23 @@ public class PedidoBO {
     }
 
     public void cadastrarPedido(PedidoVO pedido) throws ClassNotFoundException, SQLException, IOException {
-        double valorTotal = pedidoDAO.calcularValorTotal(pedido.getId_pedido());
-        pedido.setValor_total(valorTotal);
-        validarPedido(pedido);
         pedidoDAO.PedidoDAO_INSERT(pedido);
+        pedidoDAO.PedidoDAO_ATUALIZARValorTotal(pedido.getId_pedido());
     }
 
+    public void atualizarValorTotal(int idPedido) throws SQLException {
+        pedidoDAO.PedidoDAO_ATUALIZARValorTotal(idPedido);
+    }
 
-    public void atualizarPedido(PedidoVO pedido) throws ClassNotFoundException, SQLException, IOException {
-        pedido.setValor_total(calcularValorTotal(pedido.getId_pedido()));
-        validarPedido(pedido);
-        pedidoDAO.PedidoDAO_ATUALIZAR(pedido);
+    public void atualizarPedido(int idPedido, String statusPedido, String statusPagamento) throws SQLException {
+        pedidoDAO.PedidoDAO_ATUALIZARPedido(idPedido, statusPedido, statusPagamento);
     }
 
     public void deletarPedido(int idPedido) throws ClassNotFoundException, SQLException, IOException {
         pedidoDAO.PedidoDAO_DELETE(idPedido);
     }
 
-    public ArrayList<PedidoVO> listarPedidos() throws ClassNotFoundException, SQLException, IOException {
-        return (ArrayList<PedidoVO>) pedidoDAO.PedidoDAO_SELECTALL();
-    }
-    
-    
-    private double calcularValorTotal(int idPedido) throws SQLException {
-        return pedidoDAO.calcularValorTotal(idPedido);
-    }
-    private void validarPedido(PedidoVO pedido) throws IllegalArgumentException {
-        if (pedido.getValor_total() < 0) {
-            throw new IllegalArgumentException("O valor total do pedido não pode ser negativo.");
-        }
+    public List<PedidoVO> listarPedidos() throws ClassNotFoundException, SQLException, IOException {
+        return pedidoDAO.PedidoDAO_SELECTALL();
     }
 }

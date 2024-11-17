@@ -32,9 +32,8 @@ public class PedidoResource {
             pedidoBO.cadastrarPedido(pedido);
             UriBuilder builder = uriInfo.getAbsolutePathBuilder();
             builder.path(String.valueOf(pedido.getId_pedido()));
-            String mensagem = "Pedido cadastrado com sucesso!\n" + pedido.toString();
             return Response.created(builder.build())
-                    .entity(mensagem)
+                    .entity("Pedido cadastrado com sucesso! " + pedido.toString())
                     .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -43,17 +42,30 @@ public class PedidoResource {
         }
     }
 
-    // Atualizar pedido (PUT)
+    // Atualizar apenas o valor total (PUT)
     @PUT
-    @Path("/atualizar/{id_pedido}")
+    @Path("/atualizar_valor/{id_pedido}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response atualizarValorTotal(@PathParam("id_pedido") int id_pedido) {
+        try {
+            pedidoBO.atualizarValorTotal(id_pedido);
+            return Response.ok("Valor total atualizado com sucesso para o pedido " + id_pedido).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao atualizar valor total: " + e.getMessage())
+                    .build();
+        }
+    }
+
+    // Atualizar valor total, status de pedido e pagamento (PUT)
+    @PUT
+    @Path("/atualizar_completo/{id_pedido}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response atualizarPedido(PedidoVO pedido, @PathParam("id_pedido") int id_pedido) {
+    public Response atualizarPedido(@PathParam("id_pedido") int id_pedido, PedidoVO pedido) {
         try {
-            pedido.setId_pedido(id_pedido);
-            pedidoBO.atualizarPedido(pedido);
-            return Response.ok("Pedido atualizado com sucesso! " + pedido.toStringEdit())
-                    .build();
+            pedidoBO.atualizarPedido(id_pedido, pedido.getStatus_pedido(), pedido.getStatus_pagamento());
+            return Response.ok("Pedido " + id_pedido + " atualizado com sucesso!").build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao atualizar pedido: " + e.getMessage())

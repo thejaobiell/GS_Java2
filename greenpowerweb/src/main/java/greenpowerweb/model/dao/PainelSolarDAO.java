@@ -23,8 +23,8 @@ public class PainelSolarDAO {
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setInt(1, painelSolar.getId_painelsolar());
             stmt.setInt(2, painelSolar.getId_pedido());
-            stmt.setInt(3, painelSolar.getEnergia_gerada_kwh());
-            stmt.setInt(4, painelSolar.getEnergia_consumida_kwh());
+            stmt.setDouble(3, painelSolar.getEnergia_gerada_kwh());
+            stmt.setDouble(4, painelSolar.getEnergia_consumida_kwh());
             stmt.setDate(5, painelSolar.getData_registro());
             stmt.executeUpdate();
         }
@@ -41,8 +41,8 @@ public class PainelSolarDAO {
                 PainelSolarVO painel = new PainelSolarVO(
                     rs.getInt("id_painelsolar"),
                     rs.getInt("id_pedido"),
-                    rs.getInt("energia_gerada_kwh"),
-                    rs.getInt("energia_consumida_kwh"),
+                    rs.getDouble("energia_gerada_kwh"),
+                    rs.getDouble("energia_consumida_kwh"),
                     rs.getDate("data_registro")
                 );
                 paineis.add(painel);
@@ -53,13 +53,12 @@ public class PainelSolarDAO {
 
     // UPDATE
     public void PainelSolarDAO_UPDATE(PainelSolarVO painelSolar) throws SQLException {
-        String sql = "UPDATE PAINELSOLAR SET id_pedido = ?, energia_gerada_kwh = ?, energia_consumida_kwh = ?, data_registro = ? WHERE id_painelsolar = ?";
+        String sql = "UPDATE PAINELSOLAR SET energia_gerada_kwh = ?, energia_consumida_kwh = ?, data_registro = ? WHERE id_painelsolar = ?";
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
-            stmt.setInt(1, painelSolar.getId_pedido());
-            stmt.setInt(2, painelSolar.getEnergia_gerada_kwh());
-            stmt.setInt(3, painelSolar.getEnergia_consumida_kwh());
-            stmt.setDate(4, painelSolar.getData_registro());
-            stmt.setInt(5, painelSolar.getId_painelsolar());
+            stmt.setDouble(1, painelSolar.getEnergia_gerada_kwh());
+            stmt.setDouble(2, painelSolar.getEnergia_consumida_kwh());
+            stmt.setDate(3, painelSolar.getData_registro());
+            stmt.setInt(4, painelSolar.getId_painelsolar());
             stmt.executeUpdate();
         }
     }
@@ -73,7 +72,7 @@ public class PainelSolarDAO {
         }
     }
     
-    // Selecionar via ID
+    // SELECIONAR VIA ID
     public PainelSolarVO PainelSolarDAO_SELECTBYID(int id) throws SQLException {
         String sql = "SELECT * FROM PAINELSOLAR WHERE id_painelsolar = ?";
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
@@ -83,8 +82,8 @@ public class PainelSolarDAO {
                     return new PainelSolarVO(
                         rs.getInt("id_painelsolar"),
                         rs.getInt("id_pedido"),
-                        rs.getInt("energia_gerada_kwh"),
-                        rs.getInt("energia_consumida_kwh"),
+                        rs.getDouble("energia_gerada_kwh"),
+                        rs.getDouble("energia_consumida_kwh"),
                         rs.getDate("data_registro")
                     );
                 } else {
