@@ -14,20 +14,7 @@ public class PedidoDAO {
         this.conexao = new ConnDAO().conexao();
     }
 
-    public double calcularValorTotal(int idPedido) throws SQLException {
-        String sql = "SELECT SUM(preco_final) AS valor_total FROM ITEM_COMPRADO WHERE id_pedido = ?";
-        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
-            stmt.setInt(1, idPedido);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getDouble("valor_total");
-                }
-            }
-        }
-        return 0.0;
-    }
-
-    public void PedidoDAO_INSERT(PedidoVO pedido) throws SQLException {
+    public void pedidoDaoInsert(PedidoVO pedido) throws SQLException {
         String sql = "INSERT INTO PEDIDO (id_pedido, email_cliente, data_pedido, status_pedido, status_pagamento, valor_total) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
@@ -41,7 +28,7 @@ public class PedidoDAO {
         }
     }
 
-    public void PedidoDAO_ATUALIZARValorTotal(int idPedido) throws SQLException {
+    public void pedidoDaoAtualizarValorTotal(int idPedido) throws SQLException {
         double valorTotal = calcularValorTotal(idPedido);
 
         String sql = "UPDATE PEDIDO SET valor_total = ? WHERE id_pedido = ?";
@@ -53,7 +40,7 @@ public class PedidoDAO {
         }
     }
 
-    public void PedidoDAO_ATUALIZARPedido(int idPedido, String statusPedido, String statusPagamento) throws SQLException {
+    public void pedidoDaoAtualizarPedido(int idPedido, String statusPedido, String statusPagamento) throws SQLException {
         double valorTotal = calcularValorTotal(idPedido);
 
         String sql = "UPDATE PEDIDO SET valor_total = ?, status_pedido = ?, status_pagamento = ? WHERE id_pedido = ?";
@@ -67,7 +54,7 @@ public class PedidoDAO {
         }
     }
 
-    public List<PedidoVO> PedidoDAO_SELECTALL() throws SQLException {
+    public List<PedidoVO> pedidoDaoSelectAll() throws SQLException {
         List<PedidoVO> pedidos = new ArrayList<>();
         String sql = "SELECT * FROM PEDIDO";
 
@@ -89,12 +76,25 @@ public class PedidoDAO {
         return pedidos;
     }
 
-    public void PedidoDAO_DELETE(int idPedido) throws SQLException {
+    public void pedidoDaoDelete(int idPedido) throws SQLException {
         String sql = "DELETE FROM PEDIDO WHERE id_pedido = ?";
 
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setInt(1, idPedido);
             stmt.executeUpdate();
         }
+    }
+    
+    public double calcularValorTotal(int idPedido) throws SQLException {
+        String sql = "SELECT SUM(preco_final) AS valor_total FROM ITEM_COMPRADO WHERE id_pedido = ?";
+        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
+            stmt.setInt(1, idPedido);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getDouble("valor_total");
+                }
+            }
+        }
+        return 0.0;
     }
 }

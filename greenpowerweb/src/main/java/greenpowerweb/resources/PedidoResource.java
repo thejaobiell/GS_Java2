@@ -22,7 +22,6 @@ public class PedidoResource {
         }
     }
 
-    // Cadastrar um pedido (POST)
     @POST
     @Path("/registrar")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -42,7 +41,6 @@ public class PedidoResource {
         }
     }
 
-    // Atualizar apenas o valor total (PUT)
     @PUT
     @Path("/atualizar_valor/{id_pedido}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -57,7 +55,6 @@ public class PedidoResource {
         }
     }
 
-    // Atualizar valor total, status de pedido e pagamento (PUT)
     @PUT
     @Path("/atualizar_completo/{id_pedido}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -73,7 +70,6 @@ public class PedidoResource {
         }
     }
 
-    // Deletar pedido (DELETE)
     @DELETE
     @Path("/deletar/{id_pedido}")
     public Response deletarPedido(@PathParam("id_pedido") int id_pedido) {
@@ -87,7 +83,6 @@ public class PedidoResource {
         }
     }
 
-    // Listar pedidos (GET)
     @GET
     @Path("/listar")
     @Produces(MediaType.APPLICATION_JSON)

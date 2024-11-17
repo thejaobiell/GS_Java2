@@ -1,5 +1,6 @@
 package greenpowerweb.model.vo;
 
+//os nomes dos atributos estão iguais aos nomes da tabela
 public class ClienteVO {
     private String email_Cliente;
     private String senha_Cliente;

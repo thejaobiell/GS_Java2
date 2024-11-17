@@ -17,8 +17,7 @@ public class ClienteDAO {
         this.conexao = new ConnDAO().conexao();
     }
 
-    // CREATE
-    public void ClienteDAO_INSERT(ClienteVO cliente) throws SQLException {
+    public void clienteDaoInsert(ClienteVO cliente) throws SQLException {
         String sql = "INSERT INTO CLIENTE (email_cliente, senha_cliente, nome_cliente, sobrenome_cliente, cpf_cliente, rua_cliente, numero_cliente, complemento_cliente, bairro_cliente, cidade_cliente, estado_cliente, cep_cliente) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
@@ -38,8 +37,7 @@ public class ClienteDAO {
         }
     }
 
-    // READ (Listar todos os clientes)
-    public List<ClienteVO> ClienteDAO_SELECTALL() throws SQLException {
+    public List<ClienteVO> clienteDaoSelectAll() throws SQLException {
         List<ClienteVO> clientes = new ArrayList<>();
         String sql = "SELECT * FROM CLIENTE";
         
@@ -67,8 +65,7 @@ public class ClienteDAO {
         return clientes;
     }
     
-    // Verificar login (GET)
-    public ClienteVO ClienteDAO_LOGIN(String email, String senha) throws SQLException {
+    public ClienteVO clienteDaoLogin(String email, String senha) throws SQLException {
         String sql = "SELECT * FROM CLIENTE WHERE email_cliente = ? AND senha_cliente = ?";
         
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
@@ -98,9 +95,7 @@ public class ClienteDAO {
         }
     }
 
-
-    // UPDATE
-    public void ClienteDAO_ATUALIZAR(ClienteVO cliente) throws SQLException {
+    public void clienteDaoAtualizar(ClienteVO cliente) throws SQLException {
         String sql = "UPDATE CLIENTE SET senha_cliente = ?, nome_cliente = ?, sobrenome_cliente = ?, rua_cliente = ?, numero_cliente = ?, complemento_cliente = ?, bairro_cliente = ?, cidade_cliente = ?, estado_cliente = ?, cep_cliente = ? WHERE email_cliente = ?";
         
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
@@ -119,8 +114,7 @@ public class ClienteDAO {
         }
     }
 
-    // DELETE
-    public void ClienteDAO_DELETE(String emailCliente) throws SQLException {
+    public void clienteDaoDelete(String emailCliente) throws SQLException {
         String sql = "DELETE FROM CLIENTE WHERE email_cliente = ?";
         
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {

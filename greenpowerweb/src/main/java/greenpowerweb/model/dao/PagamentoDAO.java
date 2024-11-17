@@ -14,8 +14,7 @@ public class PagamentoDAO {
         this.conexao = new ConnDAO().conexao();
     }
 
-    // CREATE
-    public void PagamentoDAO_INSERT(PagamentoVO pagamento) throws SQLException {
+    public void pagamentoDaoInsert(PagamentoVO pagamento) throws SQLException {
         String sqlValorPedido = "SELECT valor_total FROM PEDIDO WHERE id_pedido = ?";
         double valorTotalPedido = 0.0;
 
@@ -47,9 +46,7 @@ public class PagamentoDAO {
         }
     }
 
-
-    // READ (Listar todos os pagamentos)
-    public List<PagamentoVO> PagamentoDAO_SELECTALL() throws SQLException {
+    public List<PagamentoVO> pagamentoDaoSelectAll() throws SQLException {
         List<PagamentoVO> pagamentos = new ArrayList<>();
         String sql = "SELECT * FROM PAGAMENTO";
         
@@ -73,20 +70,16 @@ public class PagamentoDAO {
         return pagamentos;
     }
 
-    // UPDATE
-    public void PagamentoDAO_ATUALIZAR(PagamentoVO pagamento) throws SQLException {
-        String sql = "UPDATE PAGAMENTO SET status_pagamento = ?, data_pagamento = ?, valor_pagamento = ?, qtd_parcelas = ? WHERE id_pagamento = ?";
+    public void pagamentoDaoAtualizar(PagamentoVO pagamento) throws SQLException {
+        String sql = "UPDATE PAGAMENTO SET status_pagamento = ?, data_pagamento = ? WHERE id_pagamento = ?";
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setString(1, pagamento.getStatus_pagamento());
             stmt.setDate(2, new java.sql.Date(pagamento.getData_pagamento().getTime()));
-            stmt.setDouble(3, pagamento.getValor_pagamento());
-            stmt.setInt(4, pagamento.getQtd_parcelas());
-            stmt.setInt(5, pagamento.getId_pagamento());
+            stmt.setInt(3, pagamento.getId_pagamento());
             stmt.executeUpdate();
         }
     }
 
-    
     public void atualizarStatusPedido(int idPedido, String statusPagamento) throws SQLException {
         String sqlPedido = "UPDATE PEDIDO SET status_pagamento = ? WHERE id_pedido = ?";
         try (PreparedStatement stmtPedido = conexao.prepareStatement(sqlPedido)) {
@@ -96,8 +89,7 @@ public class PagamentoDAO {
         }
     }
 
-    // DELETE
-    public void PagamentoDAO_DELETE(int idPagamento) throws SQLException {
+    public void pagamentoDaoDelete(int idPagamento) throws SQLException {
         String sql = "DELETE FROM PAGAMENTO WHERE id_pagamento = ?";
         
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {

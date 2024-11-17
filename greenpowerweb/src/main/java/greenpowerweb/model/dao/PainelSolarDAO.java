@@ -17,8 +17,7 @@ public class PainelSolarDAO {
         this.conexao = new ConnDAO().conexao();
     }
 
-    // CREATE
-    public void PainelSolarDAO_INSERT(PainelSolarVO painelSolar) throws SQLException {
+    public void painelSolarDaoInsert(PainelSolarVO painelSolar) throws SQLException {
         String sql = "INSERT INTO PAINELSOLAR (id_painelsolar, id_pedido, energia_gerada_kwh, energia_consumida_kwh, data_registro) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setInt(1, painelSolar.getId_painelsolar());
@@ -30,8 +29,7 @@ public class PainelSolarDAO {
         }
     }
 
-    // READ (Listar todos os painéis solares)
-    public List<PainelSolarVO> PainelSolarDAO_SELECTALL() throws SQLException {
+    public List<PainelSolarVO> painelSolarDaoSelectAll() throws SQLException {
         List<PainelSolarVO> paineis = new ArrayList<>();
         String sql = "SELECT * FROM PAINELSOLAR";
         try (PreparedStatement stmt = conexao.prepareStatement(sql);
@@ -51,8 +49,7 @@ public class PainelSolarDAO {
         return paineis;
     }
 
-    // UPDATE
-    public void PainelSolarDAO_UPDATE(PainelSolarVO painelSolar) throws SQLException {
+    public void painelSolarDaoUpdate(PainelSolarVO painelSolar) throws SQLException {
         String sql = "UPDATE PAINELSOLAR SET energia_gerada_kwh = ?, energia_consumida_kwh = ?, data_registro = ? WHERE id_painelsolar = ?";
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setDouble(1, painelSolar.getEnergia_gerada_kwh());
@@ -63,8 +60,7 @@ public class PainelSolarDAO {
         }
     }
 
-    // DELETE
-    public void PainelSolarDAO_DELETE(int idPainelSolar) throws SQLException {
+    public void painelSolarDaoDelete(int idPainelSolar) throws SQLException {
         String sql = "DELETE FROM PAINELSOLAR WHERE id_painelsolar = ?";
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setInt(1, idPainelSolar);
@@ -72,8 +68,7 @@ public class PainelSolarDAO {
         }
     }
     
-    // SELECIONAR VIA ID
-    public PainelSolarVO PainelSolarDAO_SELECTBYID(int id) throws SQLException {
+    public PainelSolarVO painelSolarDaoSelectById(int id) throws SQLException {
         String sql = "SELECT * FROM PAINELSOLAR WHERE id_painelsolar = ?";
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setInt(1, id);

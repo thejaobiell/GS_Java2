@@ -17,8 +17,7 @@ public class ItemCompradoDAO {
         this.conexao = new ConnDAO().conexao();
     }
 
-    // CREATE
-    public void ItemPedidoDAO_INSERT(ItemCompradoVO itemPedido) throws SQLException {
+    public void itemPedidoDaoInsert(ItemCompradoVO itemPedido) throws SQLException {
         String sqlInsert = "INSERT INTO ITEM_COMPRADO (id_item, id_pedido, id_produto, quantidade, preco_unitario, preco_final) VALUES (?, ?, ?, ?, ?, ?)";
         String sqlUpdatePedido = "UPDATE PEDIDO SET valor_total = (SELECT SUM(preco_final) FROM ITEM_COMPRADO WHERE id_pedido = ?) WHERE id_pedido = ?";
         try (PreparedStatement stmtInsert = conexao.prepareStatement(sqlInsert);
@@ -36,9 +35,7 @@ public class ItemCompradoDAO {
         }
     }
 
-
-    // READ (Listar todos os itens de pedido)
-    public List<ItemCompradoVO> ItemPedidoDAO_SELECTALL() throws SQLException {
+    public List<ItemCompradoVO> itemPedidoDaoSelectAll() throws SQLException {
         List<ItemCompradoVO> itensPedido = new ArrayList<>();
         String sql = "SELECT * FROM ITEM_COMPRADO";
         
@@ -60,8 +57,7 @@ public class ItemCompradoDAO {
         return itensPedido;
     }
 
-    // UPDATE
-    public void ItemPedidoDAO_ATUALIZAR(ItemCompradoVO itemPedido) throws SQLException {
+    public void itemPedidoDaoAtualizar(ItemCompradoVO itemPedido) throws SQLException {
         String sqlUpdateItem = "UPDATE ITEM_COMPRADO SET id_pedido = ?, id_produto = ?, quantidade = ?, preco_unitario = ?, preco_final = ? WHERE id_item = ?";
         String sqlUpdatePedido = "UPDATE PEDIDO SET valor_total = (SELECT SUM(preco_final) FROM ITEM_COMPRADO WHERE id_pedido = ?) WHERE id_pedido = ?";
 
@@ -80,9 +76,7 @@ public class ItemCompradoDAO {
         }
     }
 
-
-    // DELETE
-    public void ItemPedidoDAO_DELETE(int idItem) throws SQLException {
+    public void itemPedidoDaoDelete(int idItem) throws SQLException {
         String sql = "DELETE FROM ITEM_COMPRADO WHERE id_item = ?";
         
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
@@ -90,7 +84,6 @@ public class ItemCompradoDAO {
             stmt.executeUpdate();
         }
     }
-    
     
     public double buscarPrecoProduto(int idProduto) throws SQLException {
         String sql = "SELECT preco_produto FROM PRODUTO WHERE id_produto = ?";

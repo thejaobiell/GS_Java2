@@ -22,24 +22,29 @@ public class ItemCompradoBO {
         itemComprado.setPreco_unitario(precoProduto);
         itemComprado.setPreco_final(itemComprado.getQuantidade() * precoProduto);
 
-        itemCompradoDAO.ItemPedidoDAO_INSERT(itemComprado);
+        itemCompradoDAO.itemPedidoDaoInsert(itemComprado);
     }
 
     public List<ItemCompradoVO> listarItensComprados() throws SQLException {
-        return itemCompradoDAO.ItemPedidoDAO_SELECTALL();
+        return itemCompradoDAO.itemPedidoDaoSelectAll();
     }
 
     public void atualizarItemComprado(ItemCompradoVO itemComprado) throws SQLException {
         if (itemComprado == null) {
             throw new IllegalArgumentException("ItemComprado não pode ser nulo.");
         }
-        itemCompradoDAO.ItemPedidoDAO_ATUALIZAR(itemComprado);
+        
+        double precoProduto = itemCompradoDAO.buscarPrecoProduto(itemComprado.getId_produto());
+        itemComprado.setPreco_unitario(precoProduto);
+        itemComprado.setPreco_final(itemComprado.getQuantidade() * precoProduto);
+        
+        itemCompradoDAO.itemPedidoDaoAtualizar(itemComprado);
     }
 
     public void deletarItemComprado(int idItem) throws SQLException {
         if (idItem <= 0) {
             throw new IllegalArgumentException("ID do item comprado inválido.");
         }
-        itemCompradoDAO.ItemPedidoDAO_DELETE(idItem);
+        itemCompradoDAO.itemPedidoDaoDelete(idItem);
     }
 }

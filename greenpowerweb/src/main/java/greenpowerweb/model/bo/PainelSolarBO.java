@@ -14,24 +14,24 @@ public class PainelSolarBO {
 
     public void cadastrarPainelSolar(PainelSolarVO painelSolar) throws SQLException {
         validarPainelSolarDados(painelSolar);
-        painelSolarDAO.PainelSolarDAO_INSERT(painelSolar);
+        painelSolarDAO.painelSolarDaoInsert(painelSolar);
     }
 
     public void atualizarPainelSolar(PainelSolarVO painelSolar) throws SQLException {
         validarPainelSolarDados(painelSolar);
-        painelSolarDAO.PainelSolarDAO_UPDATE(painelSolar);
+        painelSolarDAO.painelSolarDaoUpdate(painelSolar);
     }
 
     public void deletarPainelSolar(int idPainelSolar) throws SQLException {
-        painelSolarDAO.PainelSolarDAO_DELETE(idPainelSolar);
+        painelSolarDAO.painelSolarDaoDelete(idPainelSolar);
     }
 
     public ArrayList<PainelSolarVO> listarPaineisSolares() throws SQLException {
-        return (ArrayList<PainelSolarVO>) painelSolarDAO.PainelSolarDAO_SELECTALL();
+        return (ArrayList<PainelSolarVO>) painelSolarDAO.painelSolarDaoSelectAll();
     }
     
     public PainelSolarVO buscarPainelSolarPorId(int id) throws SQLException {
-        return painelSolarDAO.PainelSolarDAO_SELECTBYID(id);
+        return painelSolarDAO.painelSolarDaoSelectById(id);
     }
 
     private void validarPainelSolarDados(PainelSolarVO painelSolar) {

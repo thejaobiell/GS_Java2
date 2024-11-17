@@ -18,24 +18,24 @@ public class ClienteBO {
 
     public void cadastrarCliente(ClienteVO cliente) throws ClassNotFoundException, SQLException, IOException {
         validarClienteDados(cliente);
-        clienteDAO.ClienteDAO_INSERT(cliente);
+        clienteDAO.clienteDaoInsert(cliente);
     }
 
     public void atualizarCliente(ClienteVO cliente) throws ClassNotFoundException, SQLException, IOException {
         validarClienteDados(cliente);
-        clienteDAO.ClienteDAO_ATUALIZAR(cliente);
+        clienteDAO.clienteDaoAtualizar(cliente);
     }
 
     public void deletarCliente(String cpfCliente) throws ClassNotFoundException, SQLException {
-        clienteDAO.ClienteDAO_DELETE(cpfCliente);
+        clienteDAO.clienteDaoDelete(cpfCliente);
     }
 
     public List<ClienteVO> listarClientes() throws ClassNotFoundException, SQLException {
-        return (List<ClienteVO>) clienteDAO.ClienteDAO_SELECTALL();
+        return (List<ClienteVO>) clienteDAO.clienteDaoSelectAll();
     }
     
     public ClienteVO verificarLogin(String email, String senha) throws SQLException {
-        return clienteDAO.ClienteDAO_LOGIN(email, senha);
+        return clienteDAO.clienteDaoLogin(email, senha);
     }
 
     private void validarClienteDados(ClienteVO cliente) throws IOException {

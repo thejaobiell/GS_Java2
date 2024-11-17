@@ -30,7 +30,7 @@ public class ProdutoResource {
     public Response cadastrarProduto(ProdutoVO produto, @Context UriInfo uriInfo) {
         try {
             produtoBO.cadastrarProduto(produto);
-            return Response.ok("Produto cadastrado com sucesso!").build();
+            return Response.ok("Produto cadastrado com sucesso! " + produto.toString()).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao cadastrar produto: " + e.getMessage())
@@ -48,7 +48,7 @@ public class ProdutoResource {
             for (ProdutoVO produto : produtos) {
                 produtoBO.cadastrarProduto(produto);
             }
-            return Response.ok("Produtos cadastrados com sucesso!").build();
+            return Response.ok("Produtos cadastrados com sucesso! " + produtos.toString()).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao cadastrar produtos: " + e.getMessage())

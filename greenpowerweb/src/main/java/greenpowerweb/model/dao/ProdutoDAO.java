@@ -17,8 +17,7 @@ public class ProdutoDAO {
         this.conexao = new ConnDAO().conexao();
     }
 
-    // CREATE
-    public void ProdutoDAO_INSERT(ProdutoVO produto) throws SQLException {
+    public void produtoDaoInsert(ProdutoVO produto) throws SQLException {
         String sql = "INSERT INTO PRODUTO (ID_PRODUTO, NOME_PRODUTO, DESCRICAO_PRODUTO, PRECO_PRODUTO, TIPO_PRODUTO) VALUES (?, ?, ?, ?, ?)";
         
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
@@ -31,8 +30,7 @@ public class ProdutoDAO {
         }
     }
 
-    // READ (Listar todos os clientes)
-    public List<ProdutoVO> ProdutoDAO_SELECTALL() throws SQLException {
+    public List<ProdutoVO> produtoDaoSelectAll() throws SQLException {
         List<ProdutoVO> produtos = new ArrayList<>();
         String sql = "SELECT * FROM PRODUTO";
         
@@ -53,8 +51,7 @@ public class ProdutoDAO {
         return produtos;
     }
 
-    // UPDATE
-    public void ProdutoDAO_ATUALIZAR(ProdutoVO produto) throws SQLException {
+    public void produtoDaoAtualizar(ProdutoVO produto) throws SQLException {
         String sql = "UPDATE PRODUTO SET NOME_PRODUTO = ?, DESCRICAO_PRODUTO = ?, PRECO_PRODUTO = ?, TIPO_PRODUTO = ? WHERE ID_PRODUTO = ?";
         
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
@@ -67,8 +64,7 @@ public class ProdutoDAO {
         }
     }
 
-    // DELETE
-    public void ProdutoDAO_DELETE(int id_produto) throws SQLException {
+    public void produtoDaoDelete(int id_produto) throws SQLException {
         String sql = "DELETE FROM PRODUTO WHERE ID_PRODUTO = ?";
         
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {

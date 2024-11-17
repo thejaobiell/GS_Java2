@@ -22,7 +22,6 @@ public class ClienteResource {
         }
     }
 
-    // Cadastrar (POST)
     @POST
     @Path("/cadastrar")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -42,7 +41,6 @@ public class ClienteResource {
         }
     }
 
-    // Atualizar (PUT)
     @PUT
     @Path("/atualizar/{email}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -59,13 +57,12 @@ public class ClienteResource {
         }
     }
 
-    // Deletar (DELETE)
     @DELETE
     @Path("/deletar/{email}")
     public Response deletarCliente(@PathParam("email") String email) {
         try {
             clienteBO.deletarCliente(email);
-            return Response.ok("Cliente "+ email + " deletado com sucesso!").build();
+            return Response.ok("Cliente " + email + " deletado com sucesso!").build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao deletar cliente: " + e.getMessage())
@@ -73,7 +70,6 @@ public class ClienteResource {
         }
     }
 
-    // Consultar (GET)
     @GET
     @Path("/listar")
     @Produces(MediaType.APPLICATION_JSON)
@@ -88,7 +84,7 @@ public class ClienteResource {
         }
     }
     
-    // Verificar login (GET)
+    //está parte é apenas para o frontend
     @GET
     @Path("/login")
     @Produces(MediaType.APPLICATION_JSON)
@@ -109,6 +105,4 @@ public class ClienteResource {
                     .build();
         }
     }
-
-
 }

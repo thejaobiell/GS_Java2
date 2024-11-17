@@ -14,18 +14,24 @@ public class ProdutoBO {
     }
 
     public void cadastrarProduto(ProdutoVO produto) throws ClassNotFoundException, SQLException, IOException {
-        produtoDAO.ProdutoDAO_INSERT(produto);
+        if (produto.getPreco_produto() <= 0) {
+            throw new IllegalArgumentException("O preço do produto deve ser maior que zero.");
+        }
+        produtoDAO.produtoDaoInsert(produto);
     }
 
     public void atualizarProduto(ProdutoVO produto) throws ClassNotFoundException, SQLException, IOException {
-        produtoDAO.ProdutoDAO_ATUALIZAR(produto);
+        if (produto.getPreco_produto() <= 0) {
+            throw new IllegalArgumentException("O preço do produto deve ser maior que zero.");
+        }
+        produtoDAO.produtoDaoAtualizar(produto);
     }
 
     public void deletarProduto(int idProduto) throws ClassNotFoundException, SQLException, IOException {
-        produtoDAO.ProdutoDAO_DELETE(idProduto);
+        produtoDAO.produtoDaoDelete(idProduto);
     }
 
     public List<ProdutoVO> listarProdutos() throws ClassNotFoundException, SQLException, IOException {
-        return produtoDAO.ProdutoDAO_SELECTALL();
+        return produtoDAO.produtoDaoSelectAll();
     }
 }

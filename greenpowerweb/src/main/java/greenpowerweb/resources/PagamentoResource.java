@@ -2,7 +2,6 @@ package greenpowerweb.resources;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-
 import greenpowerweb.model.bo.PagamentoBO;
 import greenpowerweb.model.vo.PagamentoVO;
 
@@ -22,7 +21,6 @@ public class PagamentoResource {
         }
     }
 
-    // Cadastrar pagamento (POST)
     @POST
     @Path("/registrar")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -42,7 +40,6 @@ public class PagamentoResource {
         }
     }
 
-    // Atualizar pagamento (PUT)
     @PUT
     @Path("/atualizar/{id_pagamento}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -64,7 +61,6 @@ public class PagamentoResource {
         }
     }
 
-    // Deletar pagamento (DELETE)
     @DELETE
     @Path("/deletar/{id_pagamento}")
     public Response deletarPagamento(@PathParam("id_pagamento") int idPagamento) {
@@ -78,7 +74,6 @@ public class PagamentoResource {
         }
     }
 
-    // Listar pagamentos (GET)
     @GET
     @Path("/listar")
     @Produces(MediaType.APPLICATION_JSON)

@@ -15,23 +15,23 @@ public class PedidoBO {
     }
 
     public void cadastrarPedido(PedidoVO pedido) throws ClassNotFoundException, SQLException, IOException {
-        pedidoDAO.PedidoDAO_INSERT(pedido);
-        pedidoDAO.PedidoDAO_ATUALIZARValorTotal(pedido.getId_pedido());
+        pedidoDAO.pedidoDaoInsert(pedido);
+        pedidoDAO.pedidoDaoAtualizarValorTotal(pedido.getId_pedido());
     }
 
     public void atualizarValorTotal(int idPedido) throws SQLException {
-        pedidoDAO.PedidoDAO_ATUALIZARValorTotal(idPedido);
+        pedidoDAO.pedidoDaoAtualizarValorTotal(idPedido);
     }
 
     public void atualizarPedido(int idPedido, String statusPedido, String statusPagamento) throws SQLException {
-        pedidoDAO.PedidoDAO_ATUALIZARPedido(idPedido, statusPedido, statusPagamento);
+        pedidoDAO.pedidoDaoAtualizarPedido(idPedido, statusPedido, statusPagamento);
     }
 
     public void deletarPedido(int idPedido) throws ClassNotFoundException, SQLException, IOException {
-        pedidoDAO.PedidoDAO_DELETE(idPedido);
+        pedidoDAO.pedidoDaoDelete(idPedido);
     }
 
     public List<PedidoVO> listarPedidos() throws ClassNotFoundException, SQLException, IOException {
-        return pedidoDAO.PedidoDAO_SELECTALL();
+        return pedidoDAO.pedidoDaoSelectAll();
     }
 }

@@ -23,19 +23,19 @@ public class PagamentoBO {
             throw new IllegalArgumentException("Forma de pagamento não pode ser vazia");
         }
         
-        pagamentoDAO.PagamentoDAO_INSERT(pagamento);
+        pagamentoDAO.pagamentoDaoInsert(pagamento);
     }
     
     public void atualizarPagamento(PagamentoVO pagamento) throws ClassNotFoundException, SQLException, IOException {
-        pagamentoDAO.PagamentoDAO_ATUALIZAR(pagamento);
+        pagamentoDAO.pagamentoDaoAtualizar(pagamento);
         pagamentoDAO.atualizarStatusPedido(pagamento.getId_pedido(), pagamento.getStatus_pagamento());
     }
     
     public void deletarPagamento(int idPagamento) throws ClassNotFoundException, SQLException, IOException {
-        pagamentoDAO.PagamentoDAO_DELETE(idPagamento);
+        pagamentoDAO.pagamentoDaoDelete(idPagamento);
     }
     
     public List<PagamentoVO> listarPagamentos() throws ClassNotFoundException, SQLException, IOException {
-        return pagamentoDAO.PagamentoDAO_SELECTALL();
+        return pagamentoDAO.pagamentoDaoSelectAll();
     }
 }

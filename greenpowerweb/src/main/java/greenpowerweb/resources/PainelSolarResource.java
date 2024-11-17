@@ -22,7 +22,6 @@ public class PainelSolarResource {
         }
     }
 
-    // Cadastrar painel solar (POST)
     @POST
     @Path("/registrar")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -42,7 +41,6 @@ public class PainelSolarResource {
         }
     }
 
-    // Atualizar painel solar (PUT)
     @PUT
     @Path("/atualizar/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -60,7 +58,6 @@ public class PainelSolarResource {
         }
     }
 
-    // Deletar painel solar (DELETE)
     @DELETE
     @Path("/deletar/{id}")
     public Response deletarPainelSolar(@PathParam("id") int id) {
@@ -74,7 +71,6 @@ public class PainelSolarResource {
         }
     }
 
-    // Listar painéis solares (GET)
     @GET
     @Path("/listar")
     @Produces(MediaType.APPLICATION_JSON)
@@ -89,7 +85,6 @@ public class PainelSolarResource {
         }
     }
 
-    // Consultar painel solar por ID (GET)
     @GET
     @Path("/consultar/{id}")
     @Produces(MediaType.APPLICATION_JSON)
