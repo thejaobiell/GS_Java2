@@ -16,11 +16,6 @@ public class PedidoBO {
 
     public void cadastrarPedido(PedidoVO pedido) throws ClassNotFoundException, SQLException, IOException {
         pedidoDAO.pedidoDaoInsert(pedido);
-        pedidoDAO.pedidoDaoAtualizarValorTotal(pedido.getId_pedido());
-    }
-
-    public void atualizarValorTotal(int idPedido) throws SQLException {
-        pedidoDAO.pedidoDaoAtualizarValorTotal(idPedido);
     }
 
     public void atualizarPedido(int idPedido, String statusPedido, String statusPagamento) throws SQLException {

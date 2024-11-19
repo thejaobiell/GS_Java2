@@ -28,28 +28,13 @@ public class PedidoDAO {
         }
     }
 
-    public void pedidoDaoAtualizarValorTotal(int idPedido) throws SQLException {
-        double valorTotal = calcularValorTotal(idPedido);
-
-        String sql = "UPDATE PEDIDO SET valor_total = ? WHERE id_pedido = ?";
-
-        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
-            stmt.setDouble(1, valorTotal);
-            stmt.setInt(2, idPedido);
-            stmt.executeUpdate();
-        }
-    }
-
     public void pedidoDaoAtualizarPedido(int idPedido, String statusPedido, String statusPagamento) throws SQLException {
-        double valorTotal = calcularValorTotal(idPedido);
-
-        String sql = "UPDATE PEDIDO SET valor_total = ?, status_pedido = ?, status_pagamento = ? WHERE id_pedido = ?";
+        String sql = "UPDATE PEDIDO SET status_pedido = ?, status_pagamento = ? WHERE id_pedido = ?";
 
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
-            stmt.setDouble(1, valorTotal);
-            stmt.setString(2, statusPedido);
-            stmt.setString(3, statusPagamento);
-            stmt.setInt(4, idPedido);
+            stmt.setString(1, statusPedido);
+            stmt.setString(2, statusPagamento);
+            stmt.setInt(3, idPedido);
             stmt.executeUpdate();
         }
     }
@@ -83,18 +68,5 @@ public class PedidoDAO {
             stmt.setInt(1, idPedido);
             stmt.executeUpdate();
         }
-    }
-    
-    public double calcularValorTotal(int idPedido) throws SQLException {
-        String sql = "SELECT SUM(preco_final) AS valor_total FROM ITEM_COMPRADO WHERE id_pedido = ?";
-        try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
-            stmt.setInt(1, idPedido);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getDouble("valor_total");
-                }
-            }
-        }
-        return 0.0;
     }
 }

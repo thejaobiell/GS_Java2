@@ -45,12 +45,12 @@ public class ClienteResource {
     }
 
     @PUT
-    @Path("/atualizar/{email}")
+    @Path("/atualizar/{cpf}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response atualizarCliente(ClienteVO cliente, @PathParam("email") String email) {
+    public Response atualizarCliente(@PathParam("cpf") String cpf, ClienteVO cliente) {
         try {
-            clienteBO.atualizarCliente(cliente, email);
+            clienteBO.atualizarCliente(cpf, cliente);
             return Response.ok("Cliente atualizado com sucesso!")
                     .entity(cliente)
                     .build();
@@ -66,11 +66,11 @@ public class ClienteResource {
     }
 
     @DELETE
-    @Path("/deletar/{email}")
-    public Response deletarCliente(@PathParam("email") String email) {
+    @Path("/deletar/{cpf}")
+    public Response deletarCliente(@PathParam("cpf") String cpf) {
         try {
-            clienteBO.deletarCliente(email);
-            return Response.ok("Cliente " + email + " deletado com sucesso!").build();
+            clienteBO.deletarCliente(cpf);
+            return Response.ok("Cliente com CPF " + cpf + " deletado com sucesso!").build();
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao deletar cliente (DB): " + e.getMessage())

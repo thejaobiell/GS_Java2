@@ -9,7 +9,7 @@ import javax.ws.rs.core.Response;
 import java.sql.SQLException;
 import java.util.List;
 
-@Path("/painelsolares")
+@Path("/painelsolar")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class PainelSolarResource {
@@ -24,7 +24,9 @@ public class PainelSolarResource {
     }
 
     @POST
-    @Path("/registar")
+    @Path("/registrar")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response cadastrarPainelSolar(PainelSolarVO painelSolar) {
         try {
             painelSolarBO.cadastrarPainelSolar(painelSolar);
@@ -38,6 +40,8 @@ public class PainelSolarResource {
 
     @GET
     @Path("/listar")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response listarPaineisSolares() {
         try {
             List<PainelSolarVO> paineis = painelSolarBO.listarPaineisSolares();
@@ -49,6 +53,8 @@ public class PainelSolarResource {
 
     @GET
     @Path("/listar/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response buscarPainelSolarPorId(@PathParam("id") int id) {
         try {
             PainelSolarVO painel = painelSolarBO.buscarPainelSolarPorId(id);
@@ -63,6 +69,8 @@ public class PainelSolarResource {
 
     @PUT
     @Path("/atualizar/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response atualizarPainelSolar(@PathParam("id") int id, PainelSolarVO painelSolar) {
         try {
             painelSolar.setId_painelsolar(id);
@@ -77,6 +85,8 @@ public class PainelSolarResource {
 
     @DELETE
     @Path("/deletar/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response deletarPainelSolar(@PathParam("id") int id) {
         try {
             painelSolarBO.deletarPainelSolar(id);

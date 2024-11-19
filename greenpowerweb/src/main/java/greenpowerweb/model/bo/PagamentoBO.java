@@ -19,6 +19,10 @@ public class PagamentoBO {
             throw new IllegalArgumentException("A quantidade de parcelas não pode ser menor que 1 ou maior que 10");
         }
         
+        if ("PIX".equalsIgnoreCase(pagamento.getForma_pagamento()) && pagamento.getQtd_parcelas() > 1) {
+            throw new IllegalArgumentException("O pagamento via PIX não pode ser parcelado.");
+        }
+        
         if (pagamento.getForma_pagamento() == null || pagamento.getForma_pagamento().isEmpty()) {
             throw new IllegalArgumentException("Forma de pagamento não pode ser vazia");
         }

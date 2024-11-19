@@ -55,13 +55,12 @@ public class PainelSolarDAO {
     }
 
     public void painelSolarDaoUpdate(PainelSolarVO painelSolar) throws SQLException {
-        String sql = "UPDATE PAINELSOLAR SET energia_gerada_kwh = ?, energia_consumida_kwh = ?, data_registro = ?, email_cliente = ? WHERE id_painelsolar = ?";
+        String sql = "UPDATE PAINELSOLAR SET energia_gerada_kwh = ?, energia_consumida_kwh = ?, data_registro = ? WHERE id_painelsolar = ?";
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setDouble(1, painelSolar.getEnergia_gerada_kwh());
             stmt.setDouble(2, painelSolar.getEnergia_consumida_kwh());
             stmt.setDate(3, painelSolar.getData_registro());
-            stmt.setString(4, painelSolar.getEmail_cliente());
-            stmt.setInt(5, painelSolar.getId_painelsolar());
+            stmt.setInt(4, painelSolar.getId_painelsolar());
 
             int rowsAffected = stmt.executeUpdate();
 

@@ -44,24 +44,6 @@ public class PedidoResource {
                     .build();
         }
     }
-
-    @PUT
-    @Path("/atualizar_valor/{id_pedido}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response atualizarValorTotal(@PathParam("id_pedido") int id_pedido) {
-        try {
-            pedidoBO.atualizarValorTotal(id_pedido);
-            return Response.ok("Valor total atualizado com sucesso para o pedido " + id_pedido).build();
-        } catch (SQLException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro ao atualizar valor total (DB): " + e.getMessage())
-                    .build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro ao atualizar valor total: " + e.getMessage())
-                    .build();
-        }
-    }
     
     @PUT
     @Path("/atualizar_completo/{id_pedido}")

@@ -21,9 +21,8 @@ public class ClienteBO {
         clienteDAO.clienteDaoInsert(cliente);
     }
 
-    public void atualizarCliente(ClienteVO cliente, String emailClienteOriginal) throws ClassNotFoundException, SQLException, IOException {
-        validarClienteDados(cliente);
-        clienteDAO.clienteDaoAtualizar(cliente, emailClienteOriginal);
+    public void atualizarCliente(String cpf, ClienteVO cliente) throws ClassNotFoundException, SQLException, IOException {
+        clienteDAO.clienteDaoAtualizar(cpf, cliente);
     }
 
 
@@ -32,7 +31,7 @@ public class ClienteBO {
     }
 
     public List<ClienteVO> listarClientes() throws ClassNotFoundException, SQLException {
-        return (List<ClienteVO>) clienteDAO.clienteDaoSelectAll();
+        return clienteDAO.clienteDaoSelectAll();
     }
     
     public ClienteVO verificarLogin(String email, String senha) throws SQLException {

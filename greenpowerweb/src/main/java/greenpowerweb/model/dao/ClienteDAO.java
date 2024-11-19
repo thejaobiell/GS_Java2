@@ -99,41 +99,33 @@ public class ClienteDAO {
         }
     }
 
-    public void clienteDaoAtualizar(ClienteVO cliente, String emailClienteOriginal) throws SQLException {
-        String sql = "UPDATE CLIENTE SET email_cliente = ?, senha_cliente = ?, nome_cliente = ?, sobrenome_cliente = ?, rua_cliente = ?, numero_cliente = ?, complemento_cliente = ?, bairro_cliente = ?, cidade_cliente = ?, estado_cliente = ?, cep_cliente = ? WHERE email_cliente = ?";
+    public void clienteDaoAtualizar(String cpf, ClienteVO cliente) throws SQLException {
+        String sql = "UPDATE CLIENTE SET email_cliente = ?, senha_cliente = ? WHERE cpf_cliente = ?";
         
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setString(1, cliente.getEmail_Cliente());
-            stmt.setString(2, cliente.getSenha_Cliente()); 
-            stmt.setString(3, cliente.getNome_Cliente());
-            stmt.setString(4, cliente.getSobrenome_Cliente());
-            stmt.setString(5, cliente.getRua_Cliente());
-            stmt.setInt(6, cliente.getNumero_Cliente());
-            stmt.setString(7, cliente.getComplemento_Cliente());
-            stmt.setString(8, cliente.getBairro_Cliente());
-            stmt.setString(9, cliente.getCidade_Cliente());
-            stmt.setString(10, cliente.getEstado_Cliente());
-            stmt.setString(11, cliente.getCep_Cliente());
-            stmt.setString(12, emailClienteOriginal);
+            stmt.setString(2, cliente.getSenha_Cliente());
+            stmt.setString(3, cpf);
 
             int rowsAffected = stmt.executeUpdate();
             
             if (rowsAffected == 0) {
-                throw new SQLException("Nenhum cliente encontrado com o email fornecido para atualização.");
+                throw new SQLException("Nenhum cliente encontrado com o CPF fornecido para atualização.");
             }
         }
     }
 
-    public void clienteDaoDelete(String emailCliente) throws SQLException {
-        String sql = "DELETE FROM CLIENTE WHERE email_cliente = ?";
+    public void clienteDaoDelete(String cpfCliente) throws SQLException {
+        String sql = "DELETE FROM CLIENTE WHERE cpf_cliente = ?";
         
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
-            stmt.setString(1, emailCliente);
+            stmt.setString(1, cpfCliente);
             int rowsAffected = stmt.executeUpdate();
             
             if (rowsAffected == 0) {
-                throw new SQLException("Nenhum cliente encontrado com o email fornecido para exclusão.");
+                throw new SQLException("Nenhum cliente encontrado com o CPF fornecido para exclusão.");
             }
         }
     }
+
 }
