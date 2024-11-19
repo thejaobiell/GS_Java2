@@ -33,9 +33,13 @@ public class PagamentoResource {
             return Response.created(builder.build())
                     .entity("Pagamento registrado com sucesso! " + pagamento.toString())
                     .build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao registrar pagamento (DB): " + e.getMessage())
+                    .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro ao cadastrar pagamento: " + e.getMessage())
+                    .entity("Erro ao registrar pagamento: " + e.getMessage())
                     .build();
         }
     }
@@ -52,7 +56,7 @@ public class PagamentoResource {
                     .build();
         } catch (SQLException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro ao atualizar pagamento: " + e.getMessage())
+                    .entity("Erro ao atualizar pagamento (DB): " + e.getMessage())
                     .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -67,6 +71,10 @@ public class PagamentoResource {
         try {
             pagamentoBO.deletarPagamento(idPagamento);
             return Response.ok("Pagamento " + idPagamento + " deletado com sucesso!").build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao deletar pagamento (DB): " + e.getMessage())
+                    .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao deletar pagamento: " + e.getMessage())
@@ -81,6 +89,10 @@ public class PagamentoResource {
         try {
             List<PagamentoVO> pagamentos = pagamentoBO.listarPagamentos();
             return Response.ok(pagamentos).build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao listar pagamentos (DB): " + e.getMessage())
+                    .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao listar pagamentos: " + e.getMessage())

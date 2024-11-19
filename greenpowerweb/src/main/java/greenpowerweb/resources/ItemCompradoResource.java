@@ -29,6 +29,10 @@ public class ItemCompradoResource {
         try {
             itemCompradoBO.cadastrarItemComprado(itemComprado);
             return Response.ok("Item comprado cadastrado com sucesso! " + itemComprado.toString()).build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao cadastrar item comprado (DB): " + e.getMessage())
+                    .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao cadastrar item comprado: " + e.getMessage())
@@ -46,6 +50,10 @@ public class ItemCompradoResource {
                 itemCompradoBO.cadastrarItemComprado(itemComprado);
             }
             return Response.ok("Itens comprados cadastrados com sucesso! " + itensComprados.toString()).build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao cadastrar itens comprados (DB): " + e.getMessage())
+                    .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao cadastrar itens comprados: " + e.getMessage())
@@ -62,6 +70,10 @@ public class ItemCompradoResource {
             itemComprado.setId_item(idItem);
             itemCompradoBO.atualizarItemComprado(itemComprado);
             return Response.ok("Item comprado atualizado com sucesso!").build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao atualizar item comprado (DB): " + e.getMessage())
+                    .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao atualizar item comprado: " + e.getMessage())
@@ -75,6 +87,10 @@ public class ItemCompradoResource {
         try {
             itemCompradoBO.deletarItemComprado(idItem);
             return Response.ok("Item comprado " + idItem + " deletado com sucesso!").build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao deletar item comprado (DB): " + e.getMessage())
+                    .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao deletar item comprado: " + e.getMessage())
@@ -89,6 +105,10 @@ public class ItemCompradoResource {
         try {
             List<ItemCompradoVO> itensComprados = itemCompradoBO.listarItensComprados();
             return Response.ok(itensComprados).build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao listar itens comprados (DB): " + e.getMessage())
+                    .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao listar itens comprados: " + e.getMessage())

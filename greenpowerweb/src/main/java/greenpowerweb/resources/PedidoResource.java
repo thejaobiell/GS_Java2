@@ -34,6 +34,10 @@ public class PedidoResource {
             return Response.created(builder.build())
                     .entity("Pedido cadastrado com sucesso! " + pedido.toString())
                     .build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao cadastrar pedido (DB): " + e.getMessage())
+                    .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao cadastrar pedido: " + e.getMessage())
@@ -48,13 +52,17 @@ public class PedidoResource {
         try {
             pedidoBO.atualizarValorTotal(id_pedido);
             return Response.ok("Valor total atualizado com sucesso para o pedido " + id_pedido).build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao atualizar valor total (DB): " + e.getMessage())
+                    .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao atualizar valor total: " + e.getMessage())
                     .build();
         }
     }
-
+    
     @PUT
     @Path("/atualizar_completo/{id_pedido}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -63,26 +71,34 @@ public class PedidoResource {
         try {
             pedidoBO.atualizarPedido(id_pedido, pedido.getStatus_pedido(), pedido.getStatus_pagamento());
             return Response.ok("Pedido " + id_pedido + " atualizado com sucesso!").build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao atualizar pedido (DB): " + e.getMessage())
+                    .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao atualizar pedido: " + e.getMessage())
                     .build();
         }
     }
-
+    
     @DELETE
     @Path("/deletar/{id_pedido}")
     public Response deletarPedido(@PathParam("id_pedido") int id_pedido) {
         try {
             pedidoBO.deletarPedido(id_pedido);
             return Response.ok("Pedido " + id_pedido + " deletado com sucesso!").build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao deletar pedido (DB): " + e.getMessage())
+                    .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao deletar pedido: " + e.getMessage())
                     .build();
         }
     }
-
+    
     @GET
     @Path("/listar")
     @Produces(MediaType.APPLICATION_JSON)
@@ -90,6 +106,10 @@ public class PedidoResource {
         try {
             List<PedidoVO> pedidos = pedidoBO.listarPedidos();
             return Response.ok(pedidos).build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao listar pedidos (DB): " + e.getMessage())
+                    .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao listar pedidos: " + e.getMessage())

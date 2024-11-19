@@ -1,60 +1,77 @@
 package greenpowerweb.resources;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.*;
-
 import greenpowerweb.model.bo.PainelSolarBO;
 import greenpowerweb.model.vo.PainelSolarVO;
 
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
-@Path("/painelsolar")
+@Path("/painelsolares")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class PainelSolarResource {
-
     private PainelSolarBO painelSolarBO;
 
     public PainelSolarResource() {
         try {
             this.painelSolarBO = new PainelSolarBO();
         } catch (ClassNotFoundException | SQLException e) {
-            throw new RuntimeException("Erro ao inicializar PainelSolarBO: " + e.getMessage());
+            throw new WebApplicationException("Erro ao inicializar PainelSolarBO: " + e.getMessage(), Response.Status.INTERNAL_SERVER_ERROR);
         }
     }
 
     @POST
-    @Path("/registrar")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response cadastrarPainelSolar(PainelSolarVO painelSolar, @Context UriInfo uriInfo) throws SQLException {
+    @Path("/registar")
+    public Response cadastrarPainelSolar(PainelSolarVO painelSolar) {
         try {
             painelSolarBO.cadastrarPainelSolar(painelSolar);
-            UriBuilder builder = uriInfo.getAbsolutePathBuilder();
-            builder.path(String.valueOf(painelSolar.getId_painelsolar()));
-            return Response.created(builder.build())
-                    .entity("Painel solar cadastrado com sucesso! " + painelSolar.toString())
-                    .build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro ao cadastrar painel solar: " + e.getMessage())
-                    .build();
+            return Response.status(Response.Status.CREATED).entity(painelSolar).build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao cadastrar o painel solar: " + e.getMessage()).build();
+        } catch (IllegalArgumentException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Erro de validação: " + e.getMessage()).build();
+        }
+    }
+
+    @GET
+    @Path("/listar")
+    public Response listarPaineisSolares() {
+        try {
+            List<PainelSolarVO> paineis = painelSolarBO.listarPaineisSolares();
+            return Response.ok(paineis).build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao listar os painéis solares: " + e.getMessage()).build();
+        }
+    }
+
+    @GET
+    @Path("/listar/{id}")
+    public Response buscarPainelSolarPorId(@PathParam("id") int id) {
+        try {
+            PainelSolarVO painel = painelSolarBO.buscarPainelSolarPorId(id);
+            if (painel == null) {
+                return Response.status(Response.Status.NOT_FOUND).entity("Painel solar com ID " + id + " não encontrado.").build();
+            }
+            return Response.ok(painel).build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao buscar o painel solar: " + e.getMessage()).build();
         }
     }
 
     @PUT
     @Path("/atualizar/{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response atualizarPainelSolar(PainelSolarVO painelSolar, @PathParam("id") int id) {
+    public Response atualizarPainelSolar(@PathParam("id") int id, PainelSolarVO painelSolar) {
         try {
             painelSolar.setId_painelsolar(id);
             painelSolarBO.atualizarPainelSolar(painelSolar);
-            return Response.ok("Painel solar atualizado com sucesso! " + painelSolar.toString())
-                    .build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro ao atualizar painel solar: " + e.getMessage())
-                    .build();
+            return Response.ok().entity("Painel solar atualizado com sucesso.").build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao atualizar o painel solar: " + e.getMessage()).build();
+        } catch (IllegalArgumentException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Erro de validação: " + e.getMessage()).build();
         }
     }
 
@@ -63,45 +80,9 @@ public class PainelSolarResource {
     public Response deletarPainelSolar(@PathParam("id") int id) {
         try {
             painelSolarBO.deletarPainelSolar(id);
-            return Response.ok("Painel solar com ID " + id + " deletado com sucesso!").build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro ao deletar painel solar: " + e.getMessage())
-                    .build();
-        }
-    }
-
-    @GET
-    @Path("/listar")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response listarPaineisSolares() {
-        try {
-            ArrayList<PainelSolarVO> paineis = painelSolarBO.listarPaineisSolares();
-            return Response.ok(paineis).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro ao listar painéis solares: " + e.getMessage())
-                    .build();
-        }
-    }
-
-    @GET
-    @Path("/consultar/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response consultarPainelSolar(@PathParam("id") int id) {
-        try {
-            PainelSolarVO painel = painelSolarBO.buscarPainelSolarPorId(id);
-            if (painel != null) {
-                return Response.ok(painel).build();
-            } else {
-                return Response.status(Response.Status.NOT_FOUND)
-                        .entity("Painel solar não encontrado.")
-                        .build();
-            }
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erro ao consultar painel solar: " + e.getMessage())
-                    .build();
+            return Response.ok().entity("Painel solar com ID " + id + " foi removido com sucesso.").build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao remover o painel solar: " + e.getMessage()).build();
         }
     }
 }

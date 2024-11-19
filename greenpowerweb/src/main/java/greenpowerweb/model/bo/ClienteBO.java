@@ -21,10 +21,11 @@ public class ClienteBO {
         clienteDAO.clienteDaoInsert(cliente);
     }
 
-    public void atualizarCliente(ClienteVO cliente) throws ClassNotFoundException, SQLException, IOException {
+    public void atualizarCliente(ClienteVO cliente, String emailClienteOriginal) throws ClassNotFoundException, SQLException, IOException {
         validarClienteDados(cliente);
-        clienteDAO.clienteDaoAtualizar(cliente);
+        clienteDAO.clienteDaoAtualizar(cliente, emailClienteOriginal);
     }
+
 
     public void deletarCliente(String cpfCliente) throws ClassNotFoundException, SQLException {
         clienteDAO.clienteDaoDelete(cpfCliente);
@@ -35,7 +36,11 @@ public class ClienteBO {
     }
     
     public ClienteVO verificarLogin(String email, String senha) throws SQLException {
-        return clienteDAO.clienteDaoLogin(email, senha);
+        ClienteVO cliente = clienteDAO.clienteDaoLogin(email, senha);
+        if (cliente == null) {
+            throw new SQLException("Credenciais inválidas. O cliente não foi encontrado.");
+        }
+        return cliente;
     }
 
     private void validarClienteDados(ClienteVO cliente) throws IOException {

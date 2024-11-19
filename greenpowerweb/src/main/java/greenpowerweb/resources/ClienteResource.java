@@ -2,7 +2,6 @@ package greenpowerweb.resources;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-
 import greenpowerweb.model.bo.ClienteBO;
 import greenpowerweb.model.vo.ClienteVO;
 
@@ -26,13 +25,17 @@ public class ClienteResource {
     @Path("/cadastrar")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response cadastrarCliente(ClienteVO cliente, @Context UriInfo uriInfo) throws ClassNotFoundException, SQLException {
+    public Response cadastrarCliente(ClienteVO cliente, @Context UriInfo uriInfo) {
         try {
             clienteBO.cadastrarCliente(cliente);
             UriBuilder builder = uriInfo.getAbsolutePathBuilder();
             builder.path(cliente.getEmail_Cliente());
             return Response.created(builder.build())
-                    .entity(cliente.toString()) 
+                    .entity(cliente) 
+                    .build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao cadastrar cliente (DB): " + e.getMessage())
                     .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -47,8 +50,13 @@ public class ClienteResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response atualizarCliente(ClienteVO cliente, @PathParam("email") String email) {
         try {
-            clienteBO.atualizarCliente(cliente);
-            return Response.ok("Cliente atualizado com sucesso!" + cliente.toString())
+            clienteBO.atualizarCliente(cliente, email);
+            return Response.ok("Cliente atualizado com sucesso!")
+                    .entity(cliente)
+                    .build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao atualizar cliente (DB): " + e.getMessage())
                     .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
@@ -63,6 +71,10 @@ public class ClienteResource {
         try {
             clienteBO.deletarCliente(email);
             return Response.ok("Cliente " + email + " deletado com sucesso!").build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao deletar cliente (DB): " + e.getMessage())
+                    .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao deletar cliente: " + e.getMessage())
@@ -77,6 +89,10 @@ public class ClienteResource {
         try {
             List<ClienteVO> clientes = clienteBO.listarClientes();
             return Response.ok(clientes).build();
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao listar clientes (DB): " + e.getMessage())
+                    .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao listar clientes: " + e.getMessage())
@@ -84,12 +100,17 @@ public class ClienteResource {
         }
     }
     
-    //está parte é apenas para o frontend
     @GET
     @Path("/login")
     @Produces(MediaType.APPLICATION_JSON)
     public Response verificarLogin(@QueryParam("email") String email, @QueryParam("senha") String senha) {
         try {
+            if (email == null || email.isEmpty() || senha == null || senha.isEmpty()) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity("Email e senha são obrigatórios.")
+                        .build();
+            }
+
             ClienteVO cliente = clienteBO.verificarLogin(email, senha);
             
             if (cliente != null) {
@@ -99,6 +120,10 @@ public class ClienteResource {
                         .entity("Email ou senha incorretos. Tente Novamente")
                         .build();
             }
+        } catch (SQLException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Erro ao verificar login (DB): " + e.getMessage())
+                    .build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .entity("Erro ao verificar login: " + e.getMessage())

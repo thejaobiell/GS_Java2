@@ -48,6 +48,11 @@ public class ProdutoDAO {
                 produtos.add(produto);
             }
         }
+        
+        if (produtos.isEmpty()) {
+            throw new SQLException("Nenhum produto encontrado.");
+        }
+        
         return produtos;
     }
 
@@ -60,7 +65,12 @@ public class ProdutoDAO {
             stmt.setDouble(3, produto.getPreco_produto());
             stmt.setString(4, produto.getTipo_produto());
             stmt.setInt(5, produto.getId_produto());
-            stmt.executeUpdate();
+            
+            int rowsAffected = stmt.executeUpdate();
+            
+            if (rowsAffected == 0) {
+                throw new SQLException("Nenhum produto encontrado com o ID fornecido.");
+            }
         }
     }
 
@@ -69,7 +79,11 @@ public class ProdutoDAO {
         
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setInt(1, id_produto);
-            stmt.executeUpdate();
+            int rowsAffected = stmt.executeUpdate();
+            
+            if (rowsAffected == 0) {
+                throw new SQLException("Nenhum produto encontrado com o ID fornecido.");
+            }
         }
     }
 }

@@ -4,16 +4,16 @@ import java.sql.Date;
 
 public class PainelSolarVO {
     private int id_painelsolar;
-    private int id_pedido;
+    private String email_cliente;
     private double energia_gerada_kwh;
     private double energia_consumida_kwh;
     private Date data_registro;
 
     public PainelSolarVO() {}
 
-    public PainelSolarVO(int id_painelsolar, int id_pedido, double energia_gerada_kwh, double energia_consumida_kwh, Date data_registro) {
+    public PainelSolarVO(int id_painelsolar, String email_cliente, double energia_gerada_kwh, double energia_consumida_kwh, Date data_registro) {
         this.id_painelsolar = id_painelsolar;
-        this.id_pedido = id_pedido;
+        this.email_cliente = email_cliente;
         this.energia_gerada_kwh = energia_gerada_kwh;
         this.energia_consumida_kwh = energia_consumida_kwh;
         this.data_registro = data_registro;
@@ -27,12 +27,12 @@ public class PainelSolarVO {
         this.id_painelsolar = id_painelsolar;
     }
 
-    public int getId_pedido() {
-        return id_pedido;
+    public String getEmail_cliente() {
+        return email_cliente;
     }
 
-    public void setId_pedido(int id_pedido) {
-        this.id_pedido = id_pedido;
+    public void setEmail_cliente(String email_cliente) {
+        this.email_cliente = email_cliente;
     }
 
     public double getEnergia_gerada_kwh() {
@@ -64,7 +64,7 @@ public class PainelSolarVO {
         java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy");
         String dataFormatada = dateFormat.format(data_registro);
         return "Painel Solar [ID: " + id_painelsolar + 
-               ", Pedido ID: " + id_pedido + 
+               ", Email Cliente: " + email_cliente + 
                ", Energia Gerada: " + String.format("%.2f", energia_gerada_kwh) + " kWh" +
                ", Energia Consumida: " + String.format("%.2f", energia_consumida_kwh) + " kWh" + 
                ", Data de Registro: " + dataFormatada + "]";

@@ -18,14 +18,19 @@ public class PainelSolarDAO {
     }
 
     public void painelSolarDaoInsert(PainelSolarVO painelSolar) throws SQLException {
-        String sql = "INSERT INTO PAINELSOLAR (id_painelsolar, id_pedido, energia_gerada_kwh, energia_consumida_kwh, data_registro) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO PAINELSOLAR (id_painelsolar, email_cliente, energia_gerada_kwh, energia_consumida_kwh, data_registro) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setInt(1, painelSolar.getId_painelsolar());
-            stmt.setInt(2, painelSolar.getId_pedido());
+            stmt.setString(2, painelSolar.getEmail_cliente());
             stmt.setDouble(3, painelSolar.getEnergia_gerada_kwh());
             stmt.setDouble(4, painelSolar.getEnergia_consumida_kwh());
             stmt.setDate(5, painelSolar.getData_registro());
-            stmt.executeUpdate();
+
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new SQLException("Falha ao inserir o painel solar. Nenhuma linha foi inserida.");
+            }
         }
     }
 
@@ -34,11 +39,11 @@ public class PainelSolarDAO {
         String sql = "SELECT * FROM PAINELSOLAR";
         try (PreparedStatement stmt = conexao.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
-            
+
             while (rs.next()) {
                 PainelSolarVO painel = new PainelSolarVO(
                     rs.getInt("id_painelsolar"),
-                    rs.getInt("id_pedido"),
+                    rs.getString("email_cliente"),
                     rs.getDouble("energia_gerada_kwh"),
                     rs.getDouble("energia_consumida_kwh"),
                     rs.getDate("data_registro")
@@ -50,13 +55,19 @@ public class PainelSolarDAO {
     }
 
     public void painelSolarDaoUpdate(PainelSolarVO painelSolar) throws SQLException {
-        String sql = "UPDATE PAINELSOLAR SET energia_gerada_kwh = ?, energia_consumida_kwh = ?, data_registro = ? WHERE id_painelsolar = ?";
+        String sql = "UPDATE PAINELSOLAR SET energia_gerada_kwh = ?, energia_consumida_kwh = ?, data_registro = ?, email_cliente = ? WHERE id_painelsolar = ?";
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setDouble(1, painelSolar.getEnergia_gerada_kwh());
             stmt.setDouble(2, painelSolar.getEnergia_consumida_kwh());
             stmt.setDate(3, painelSolar.getData_registro());
-            stmt.setInt(4, painelSolar.getId_painelsolar());
-            stmt.executeUpdate();
+            stmt.setString(4, painelSolar.getEmail_cliente());
+            stmt.setInt(5, painelSolar.getId_painelsolar());
+
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new SQLException("Nenhum painel solar encontrado com o ID fornecido: " + painelSolar.getId_painelsolar());
+            }
         }
     }
 
@@ -64,10 +75,15 @@ public class PainelSolarDAO {
         String sql = "DELETE FROM PAINELSOLAR WHERE id_painelsolar = ?";
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setInt(1, idPainelSolar);
-            stmt.executeUpdate();
+
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected == 0) {
+                throw new SQLException("Nenhum painel solar encontrado com o ID fornecido: " + idPainelSolar);
+            }
         }
     }
-    
+
     public PainelSolarVO painelSolarDaoSelectById(int id) throws SQLException {
         String sql = "SELECT * FROM PAINELSOLAR WHERE id_painelsolar = ?";
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
@@ -76,13 +92,13 @@ public class PainelSolarDAO {
                 if (rs.next()) {
                     return new PainelSolarVO(
                         rs.getInt("id_painelsolar"),
-                        rs.getInt("id_pedido"),
+                        rs.getString("email_cliente"),
                         rs.getDouble("energia_gerada_kwh"),
                         rs.getDouble("energia_consumida_kwh"),
                         rs.getDate("data_registro")
                     );
                 } else {
-                    return null;
+                    throw new SQLException("Nenhum painel solar encontrado com o ID fornecido: " + id);
                 }
             }
         }

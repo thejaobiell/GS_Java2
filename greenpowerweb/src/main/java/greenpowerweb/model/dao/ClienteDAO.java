@@ -33,7 +33,11 @@ public class ClienteDAO {
             stmt.setString(10, cliente.getCidade_Cliente());
             stmt.setString(11, cliente.getEstado_Cliente());
             stmt.setString(12, cliente.getCep_Cliente());
-            stmt.executeUpdate();
+            int rowsAffected = stmt.executeUpdate();
+            
+            if (rowsAffected == 0) {
+                throw new SQLException("Erro ao inserir o cliente. Nenhuma linha afetada.");
+            }
         }
     }
 
@@ -89,28 +93,34 @@ public class ClienteDAO {
                         rs.getString("cep_cliente")
                     );
                 } else {
-                    return null;
+                    throw new SQLException("Credenciais inválidas para o cliente.");
                 }
             }
         }
     }
 
-    public void clienteDaoAtualizar(ClienteVO cliente) throws SQLException {
-        String sql = "UPDATE CLIENTE SET senha_cliente = ?, nome_cliente = ?, sobrenome_cliente = ?, rua_cliente = ?, numero_cliente = ?, complemento_cliente = ?, bairro_cliente = ?, cidade_cliente = ?, estado_cliente = ?, cep_cliente = ? WHERE email_cliente = ?";
+    public void clienteDaoAtualizar(ClienteVO cliente, String emailClienteOriginal) throws SQLException {
+        String sql = "UPDATE CLIENTE SET email_cliente = ?, senha_cliente = ?, nome_cliente = ?, sobrenome_cliente = ?, rua_cliente = ?, numero_cliente = ?, complemento_cliente = ?, bairro_cliente = ?, cidade_cliente = ?, estado_cliente = ?, cep_cliente = ? WHERE email_cliente = ?";
         
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
-            stmt.setString(1, cliente.getSenha_Cliente());
-            stmt.setString(2, cliente.getNome_Cliente());
-            stmt.setString(3, cliente.getSobrenome_Cliente());
-            stmt.setString(4, cliente.getRua_Cliente());
-            stmt.setInt(5, cliente.getNumero_Cliente());
-            stmt.setString(6, cliente.getComplemento_Cliente());
-            stmt.setString(7, cliente.getBairro_Cliente());
-            stmt.setString(8, cliente.getCidade_Cliente());
-            stmt.setString(9, cliente.getEstado_Cliente());
-            stmt.setString(10, cliente.getCep_Cliente());
-            stmt.setString(11, cliente.getEmail_Cliente());
-            stmt.executeUpdate();
+            stmt.setString(1, cliente.getEmail_Cliente());
+            stmt.setString(2, cliente.getSenha_Cliente()); 
+            stmt.setString(3, cliente.getNome_Cliente());
+            stmt.setString(4, cliente.getSobrenome_Cliente());
+            stmt.setString(5, cliente.getRua_Cliente());
+            stmt.setInt(6, cliente.getNumero_Cliente());
+            stmt.setString(7, cliente.getComplemento_Cliente());
+            stmt.setString(8, cliente.getBairro_Cliente());
+            stmt.setString(9, cliente.getCidade_Cliente());
+            stmt.setString(10, cliente.getEstado_Cliente());
+            stmt.setString(11, cliente.getCep_Cliente());
+            stmt.setString(12, emailClienteOriginal);
+
+            int rowsAffected = stmt.executeUpdate();
+            
+            if (rowsAffected == 0) {
+                throw new SQLException("Nenhum cliente encontrado com o email fornecido para atualização.");
+            }
         }
     }
 
@@ -119,7 +129,11 @@ public class ClienteDAO {
         
         try (PreparedStatement stmt = conexao.prepareStatement(sql)) {
             stmt.setString(1, emailCliente);
-            stmt.executeUpdate();
+            int rowsAffected = stmt.executeUpdate();
+            
+            if (rowsAffected == 0) {
+                throw new SQLException("Nenhum cliente encontrado com o email fornecido para exclusão.");
+            }
         }
     }
 }
